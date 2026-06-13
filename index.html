@@ -26,7 +26,7 @@
     .kicker{font-size:11px;letter-spacing:.22em;color:var(--gold);text-transform:uppercase}.brand h1{font-size:24px;line-height:1.05;margin:8px 0 8px}.brand p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}
     nav{display:flex;flex-direction:column;gap:8px;flex:0 0 auto}.navbtn{width:100%;border:1px solid transparent;background:transparent;color:var(--muted);padding:13px 14px;border-radius:15px;text-align:left;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:.18s}.navbtn:hover{background:#111a2b;color:var(--text);border-color:#26324a}.navbtn.active{background:linear-gradient(135deg,#15233c,#0f1727);color:#fff;border-color:#48618a;box-shadow:0 10px 30px rgba(92,200,255,.12)}
     .navdot{width:9px;height:9px;border-radius:50%;background:var(--muted)}.active .navdot{background:var(--gold);box-shadow:0 0 16px var(--gold)}
-    .side-status{position:static;margin-top:18px;padding:16px;border:1px solid #3b2830;border-radius:18px;background:rgba(255,77,100,.08)}.side-status b{color:var(--hot);display:block}.side-status small{display:block;color:var(--muted);margin-top:6px;line-height:1.35}
+    .bias-strip{margin:18px 0 0;padding:16px;border:1px solid #6b2c39;border-radius:18px;background:linear-gradient(135deg,rgba(255,77,100,.13),rgba(255,184,77,.06));display:grid;gap:6px}.bias-strip b{color:#ff7184;font-size:18px}.bias-strip small{color:var(--muted);line-height:1.45}
     main{padding:18px;max-width:1500px;width:100%;margin:auto}.page{display:none;animation:fade .25s ease}.page.active{display:block}@keyframes fade{from{opacity:.4;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
     .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:22px;align-items:stretch}.panel{background:linear-gradient(180deg,rgba(16,24,39,.92),rgba(8,12,20,.92));border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}.hero-card{padding:28px;position:relative;overflow:hidden}.hero-card:before{content:"";position:absolute;inset:-100px -100px auto auto;width:260px;height:260px;background:radial-gradient(circle,rgba(255,77,100,.22),transparent 65%)}
     h2{font-size:42px;margin:0 0 10px;letter-spacing:-.04em}.subtitle{font-size:17px;color:var(--muted);max-width:700px;line-height:1.55}.verdict{margin:24px 0;padding:20px;border-radius:20px;border:1px solid #6b2c39;background:linear-gradient(135deg,rgba(255,77,100,.18),rgba(255,184,77,.08));display:flex;align-items:center;justify-content:space-between;gap:18px}.verdict .label{font-size:12px;text-transform:uppercase;letter-spacing:.18em;color:var(--warn)}.verdict .big{font-size:35px;font-weight:900;color:#fff;letter-spacing:-.03em}.pill{display:inline-flex;border:1px solid #35445f;border-radius:999px;padding:8px 11px;background:#0d1524;color:var(--muted);font-size:13px;margin:4px}.pill.hot{border-color:#6b2c39;color:#ffd3d9;background:rgba(255,77,100,.1)}.pill.good{border-color:#24553b;color:#d6ffe8;background:rgba(64,217,140,.08)}
@@ -45,7 +45,6 @@
     <button class="closeBtn" id="closeBtn" aria-label="Close navigation">Close ✕</button>
     <div class="brand"><div class="kicker">Weather System</div><h1>BTC Almanac</h1><p>Price is not the thesis. Price is the outcome of cycle, liquidity, participation, sentiment and harmonic exhaustion.</p></div>
     <nav id="nav"></nav>
-    <div class="side-status"><b>Current Bias: DOWN</b><small>Based on late-cycle fractal condition, harmonic peak pressure and weak confirmation. Invalidation requires sustained structure recovery.</small></div>
   </aside>
   <main>
     <section id="weather" class="page active">
@@ -54,7 +53,8 @@
           <div class="kicker">Live Command Board</div><h2>The BTC Almanac</h2>
           <p class="subtitle">A static GitHub-ready utility site that reads market conditions like weather: cycle first, liquidity second, sentiment third, price last.</p>
           <div class="verdict"><div><div class="label">Almanac Weather</div><div class="big" id="weatherVerdict">STORM WARNING</div></div><div class="phase-badge" id="phaseBadge">PEAK / EXHAUSTION<br>DOWN BIAS</div></div>
-          <div><span class="pill hot">Fractal condition: late-stage</span><span class="pill hot">Harmonic arc: upper band</span><span class="pill">BTC reference: £63,000</span><span class="pill good">Static repo compatible</span></div>
+          <div class="bias-strip"><b>Current Bias: DOWN</b><small>Based on late-cycle fractal condition, harmonic peak pressure and weak confirmation. Invalidation requires sustained structure recovery.</small></div>
+          <div style="margin-top:14px"><span class="pill hot">Fractal condition: late-stage</span><span class="pill hot">Harmonic arc: upper band</span><span class="pill">BTC reference: £63,000</span><span class="pill good">Static repo compatible</span></div>
         </div>
         <div class="panel chartbox"><div class="chart-head"><div><div class="kicker">Harmonic Fractal Arc</div><h3>Expansion → Exhaustion → Contraction</h3></div><div class="phase-badge" id="arcReadout">87% ARC</div></div><div class="canvas-wrap"><canvas id="harmonicChart"></canvas></div></div>
       </div>
