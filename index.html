@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The BTC Almanac — Static Utility Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --bg: #070b13;
+      --panel: #0d1424;
+      --panel2: #121b2f;
+      --text: #eef4ff;
+      --muted: #9fb0ca;
+      --line: rgba(255,255,255,.12);
+      --good: #4de39b;
+      --warn: #ffd166;
+      --bad: #ff5f6d;
+      --info: #55b6ff;
+      --violet: #a78bfa;
+      --shadow: 0 20px 60px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(85,182,255,.18), transparent 28%),
+        radial-gradient(circle at 80% 10%, rgba(167,139,250,.16), transparent 26%),
+        linear-gradient(180deg, #050711 0%, var(--bg) 45%, #050711 100%);
+      color: var(--text);
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(18px);
+      background: rgba(7, 11, 19, .78);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      white-space: nowrap;
+      font-weight: 900;
+      letter-spacing: .3px;
+    }
+
+    .logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #f7931a, #ffd166 45%, #55b6ff);
+      display: grid;
+      place-items: center;
+      color: #111827;
+      box-shadow: 0 0 40px rgba(247,147,26,.28);
+    }
+
+    .navlinks {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .navlinks a {
+      padding: 9px 11px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+    }
+
+    .navlinks a:hover, .navlinks a.active {
+      color: var(--text);
+      border-color: var(--line);
+      background: rgba(255,255,255,.06);
+    }
+
+    main { max-width: 1280px; margin: 0 auto; padding: 24px 18px 80px; }
+
+    .hero {
+      min-height: 420px;
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 22px;
+      align-items: stretch;
+      padding: 34px 0;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.035));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .heroPanel { padding: 34px; }
+    .kicker { color: var(--info); font-weight: 800; text-transform: uppercase; font-size: 12px; letter-spacing: 1.5px; }
+    h1 { font-size: clamp(34px, 6vw, 74px); line-height: .95; margin: 14px 0; letter-spacing: -2px; }
+    .hero p { color: var(--muted); font-size: 18px; line-height: 1.6; max-width: 780px; }
+
+    .btnrow { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+    .btn {
+      cursor: pointer;
+      border: 1px solid var(--line);
+      color: var(--text);
+      background: rgba(255,255,255,.08);
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-weight: 800;
+    }
+    .btn.primary { background: linear-gradient(135deg, #f7931a, #ffd166); color: #16110a; border: none; }
+    .btn:hover { transform: translateY(-1px); }
+
+    .statusGrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 18px; }
+    .stat {
+      padding: 16px;
+      background: rgba(255,255,255,.055);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+    }
+    .stat label { display: block; color: var(--muted); font-size: 12px; margin-bottom: 7px; }
+    .stat strong { font-size: 25px; letter-spacing: -.5px; }
+    .stat small { color: var(--muted); display: block; margin-top: 6px; }
+
+    section { padding: 54px 0 8px; }
+    .sectionHead { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+    h2 { font-size: clamp(26px, 3vw, 44px); margin: 0; letter-spacing: -1px; }
+    .sectionHead p { margin: 7px 0 0; color: var(--muted); max-width: 720px; line-height: 1.5; }
+
+    .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .grid2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .full { grid-column: 1 / -1; }
+    .panel { padding: 20px; }
+    .panel h3 { margin: 0 0 10px; font-size: 20px; }
+    .panel p, .panel li { color: var(--muted); line-height: 1.55; }
+
+    .verdict {
+      font-size: 30px;
+      font-weight: 950;
+      margin: 10px 0;
+      padding: 18px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--line);
+    }
+    .good { color: var(--good); }
+    .warn { color: var(--warn); }
+    .bad { color: var(--bad); }
+    .info { color: var(--info); }
+    .violet { color: var(--violet); }
+
+    input, select, textarea {
+      width: 100%;
+      background: rgba(255,255,255,.08);
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      color: var(--text);
+      padding: 12px;
+      outline: none;
+    }
+    textarea { min-height: 120px; resize: vertical; }
+    label.form { display: block; color: var(--muted); font-size: 13px; margin: 12px 0 6px; }
+
+    .pillrow { display:flex; flex-wrap:wrap; gap:8px; margin-top: 10px; }
+    .pill { border:1px solid var(--line); background: rgba(255,255,255,.07); padding:8px 10px; border-radius:999px; font-size:12px; color:var(--muted); }
+
+    .timeline { position: relative; padding-left: 22px; }
+    .timeline:before { content:""; position:absolute; left: 7px; top: 7px; bottom: 7px; width: 2px; background: var(--line); }
+    .node { position: relative; margin: 0 0 14px; padding: 13px; border:1px solid var(--line); border-radius: 14px; background: rgba(255,255,255,.05); }
+    .node:before { content:""; position:absolute; left:-21px; top:18px; width:12px; height:12px; background:#f7931a; border-radius:50%; box-shadow: 0 0 20px #f7931a; }
+
+    table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 14px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 12px; text-align: left; color: var(--muted); }
+    th { color: var(--text); background: rgba(255,255,255,.055); }
+
+    .miniChart { height: 300px; }
+    .notice { padding: 14px; border-radius: 14px; background: rgba(85,182,255,.09); border: 1px solid rgba(85,182,255,.22); color: #cfeaff; }
+    .footer { color: var(--muted); border-top:1px solid var(--line); margin-top: 60px; padding-top: 24px; font-size: 13px; }
+
+    @media (max-width: 920px) {
+      .hero, .grid3, .grid2 { grid-template-columns: 1fr; }
+      .nav { align-items: flex-start; flex-direction: column; }
+      .navlinks { justify-content: flex-start; }
+      .statusGrid { grid-template-columns: 1fr; }
+      .heroPanel { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="nav">
+      <a class="brand" href="#home"><span class="logo">₿</span><span>The BTC Almanac</span></a>
+      <div class="navlinks" id="navlinks">
+        <a href="#dashboard">Dashboard</a>
+        <a href="#cycle">Cycle Clock</a>
+        <a href="#board">Board Room</a>
+        <a href="#alerts">Alerts</a>
+        <a href="#alts">Alt Meter</a>
+        <a href="#fractal">Fractals</a>
+        <a href="#influencers">Influencers</a>
+        <a href="#report">Report</a>
+        <a href="#settings">Settings</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section id="home" class="hero">
+      <div class="card heroPanel">
+        <div class="kicker">A weather system for the digital age</div>
+        <h1>BTC is not a price. BTC is a climate.</h1>
+        <p>This single static HTML page behaves like a multi-page utility website. It tracks BTC, calculates cycle position, scores market regime, runs your Board Room logic, creates alerts, measures altcoin stupidity risk, logs influencer contradictions, and generates an Almanac report.</p>
+        <div class="btnrow">
+          <button class="btn primary" onclick="refreshAll()">Refresh BTC Data</button>
+          <a class="btn" href="#report">Generate Report</a>
+          <button class="btn" onclick="toggleDemoMode()">Toggle Demo/API Mode</button>
+        </div>
+        <div class="pillrow">
+          <span class="pill">GitHub Pages ready</span>
+          <span class="pill">Single index.html</span>
+          <span class="pill">Public API compatible</span>
+          <span class="pill">LocalStorage archive</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="statusGrid">
+          <div class="stat"><label>BTC Price</label><strong id="btcPrice">Loading...</strong><small id="priceSource">CoinGecko API / fallback demo</small></div>
+          <div class="stat"><label>24h Change</label><strong id="btcChange">—</strong><small>Momentum check</small></div>
+          <div class="stat"><label>Almanac Regime</label><strong id="regime">—</strong><small id="cycleSub">Cycle clock</small></div>
+          <div class="stat"><label>Weather Verdict</label><strong id="weather">—</strong><small>Price + volume + sentiment + cycle</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="dashboard">
+      <div class="sectionHead"><div><h2>Live Dashboard</h2><p>Fetches public BTC data where possible. If the API is blocked by CORS/rate limits, it falls back to internal demo data so the page still works.</p></div></div>
+      <div class="grid3">
+        <div class="card panel"><h3>Price State</h3><div class="verdict" id="priceState">—</div><p id="priceStateText">Waiting for data.</p></div>
+        <div class="card panel"><h3>Volume / Liquidity Proxy</h3><div class="verdict" id="volumeState">—</div><p id="volumeStateText">Uses market cap and volume ratio as a static-site friendly proxy.</p></div>
+        <div class="card panel"><h3>Sentiment</h3><div class="verdict" id="sentimentState">Manual</div><p>Use the Settings panel to feed your own sentiment score, or later connect Alternative.me Fear & Greed.</p></div>
+        <div class="card panel full"><h3>BTC Mini Chart</h3><canvas id="btcChart" class="miniChart"></canvas></div>
+      </div>
+    </section>
+
+    <section id="cycle">
+      <div class="sectionHead"><div><h2>Cycle Clock</h2><p>Your Almanac timing model: anchor date, up-window, down-window, day count, and risk zone.</p></div></div>
+      <div class="grid2">
+        <div class="card panel">
+          <h3>Cycle Calculation</h3>
+          <div class="stat"><label>Current Cycle Day</label><strong id="cycleDay">—</strong><small id="cyclePhase">—</small></div>
+          <div class="stat" style="margin-top:12px;"><label>Down Window Progress</label><strong id="downProgress">—</strong><small id="downWindowDates">—</small></div>
+        </div>
+        <div class="card panel">
+          <h3>Almanac Timeline</h3>
+          <div class="timeline" id="cycleTimeline"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="board">
+      <div class="sectionHead"><div><h2>Board Room Decision Engine</h2><p>BTC walks into the room. The board asks whether price is supported by volume, sentiment, liquidity and cycle position.</p></div></div>
+      <div class="grid2">
+        <div class="card panel">
+          <h3>Board Verdict</h3>
+          <div class="verdict" id="boardVerdict">—</div>
+          <p id="boardReason">Waiting for calculation.</p>
+        </div>
+        <div class="card panel">
+          <h3>Decision Rules</h3>
+          <ul id="ruleList"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="alerts">
+      <div class="sectionHead"><div><h2>Alert Tracker</h2><p>Browser-based alerts work while the page is open. For real phone alerts, later attach Discord, Telegram, Zapier, IFTTT, or a free serverless function.</p></div></div>
+      <div class="grid2">
+        <div class="card panel">
+          <h3>Create Alert</h3>
+          <label class="form">BTC below price</label><input id="alertBelow" type="number" value="63000" />
+          <label class="form">BTC above price</label><input id="alertAbove" type="number" value="105000" />
+          <label class="form">Custom note</label><input id="alertNote" value="Almanac warning triggered" />
+          <button class="btn primary" style="margin-top:14px;" onclick="saveAlerts()">Save Alerts</button>
+          <button class="btn" style="margin-top:14px;" onclick="testAlert()">Test Sound/Popup</button>
+        </div>
+        <div class="card panel">
+          <h3>Alert Log</h3>
+          <div id="alertLog" class="timeline"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="alts">
+      <div class="sectionHead"><div><h2>Altcoin Idiocy Meter</h2><p>Checks whether bullish altcoin calls make sense while BTC is weak, liquidity is thin, dominance pressure is high, and cycle position is hostile.</p></div></div>
+      <div class="grid2">
+        <div class="card panel">
+          <h3>Manual Inputs</h3>
+          <label class="form">BTC trend</label><select id="btcTrend"><option value="down">Down</option><option value="sideways">Sideways</option><option value="up">Up</option></select>
+          <label class="form">BTC dominance</label><select id="btcDom"><option value="rising">Rising</option><option value="flat">Flat</option><option value="falling">Falling</option></select>
+          <label class="form">Alt/BTC strength</label><select id="altStrength"><option value="weak">Weak</option><option value="mixed">Mixed</option><option value="strong">Strong</option></select>
+          <button class="btn primary" style="margin-top:14px;" onclick="scoreAlts()">Score Alt Risk</button>
+        </div>
+        <div class="card panel">
+          <h3>Alt Risk Result</h3>
+          <div class="verdict" id="altVerdict">—</div>
+          <p id="altReason">Run the score.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="fractal">
+      <div class="sectionHead"><div><h2>Fractal Overlay Lab</h2><p>A static placeholder for your later chart engine. The key rule: compare percentage movement over time, not raw BTC price, to avoid distortion.</p></div></div>
+      <div class="card panel">
+        <h3>Normalised Fractal Logic</h3>
+        <canvas id="fractalChart" class="miniChart"></canvas>
+        <div class="notice">Future upgrade: paste CSV candle data, then the page will normalise each cycle from 100 and overlay the percentage decline/advance.</div>
+      </div>
+    </section>
+
+    <section id="influencers">
+      <div class="sectionHead"><div><h2>Influencer Contradiction Tracker</h2><p>Archive claims, dates, BTC level, later outcome, and contradiction score. Stored locally in the browser.</p></div></div>
+      <div class="grid2">
+        <div class="card panel">
+          <h3>Add Claim</h3>
+          <label class="form">Name</label><input id="infName" placeholder="Influencer name" />
+          <label class="form">Date</label><input id="infDate" type="date" />
+          <label class="form">Claim</label><textarea id="infClaim" placeholder="BTC to 180k / SOL to 1k / I called the crash..."></textarea>
+          <label class="form">Contradiction score 0-100</label><input id="infScore" type="number" min="0" max="100" value="70" />
+          <button class="btn primary" style="margin-top:14px;" onclick="addClaim()">Save Claim</button>
+        </div>
+        <div class="card panel">
+          <h3>Claim Archive</h3>
+          <table><thead><tr><th>Date</th><th>Name</th><th>Claim</th><th>Score</th></tr></thead><tbody id="claimRows"></tbody></table>
+        </div>
+      </div>
+    </section>
+
+    <section id="report">
+      <div class="sectionHead"><div><h2>Almanac Report Generator</h2><p>Creates a copy-ready market report using the current dashboard values and your cycle rules.</p></div></div>
+      <div class="card panel">
+        <button class="btn primary" onclick="generateReport()">Generate Today’s Report</button>
+        <button class="btn" onclick="copyReport()">Copy Report</button>
+        <label class="form">Generated report</label>
+        <textarea id="reportText"></textarea>
+      </div>
+    </section>
+
+    <section id="settings">
+      <div class="sectionHead"><div><h2>Settings</h2><p>Edit the Almanac assumptions directly. These values are saved inside your browser using LocalStorage.</p></div></div>
+      <div class="grid3">
+        <div class="card panel"><h3>Cycle Anchor</h3><label class="form">ATH / Anchor Date</label><input id="anchorDate" type="date" value="2025-10-06" /><label class="form">Up window days</label><input id="upDays" type="number" value="1064" /><label class="form">Down window days</label><input id="downDays" type="number" value="364" /></div>
+        <div class="card panel"><h3>Manual Sentiment</h3><label class="form">Sentiment score 0-100</label><input id="sentimentScore" type="number" min="0" max="100" value="35" /><label class="form">Liquidity score 0-100</label><input id="liquidityScore" type="number" min="0" max="100" value="40" /></div>
+        <div class="card panel"><h3>Save</h3><p>After editing, save and refresh the calculations.</p><button class="btn primary" onclick="saveSettings()">Save Settings</button><button class="btn" onclick="resetSettings()">Reset Defaults</button></div>
+      </div>
+    </section>
+
+    <div class="footer">
+      Built as a single static file. No private keys. No trading execution. Educational market framework only. API data may fail depending on CORS, rate limits, or public API availability.
+    </div>
+  </main>
+
+  <script>
+    const $ = id => document.getElementById(id);
+    const today = () => new Date();
+    let demoMode = false;
+    let market = { price: 63490, change24h: -2.7, volume: 42000000000, marketCap: 1250000000000, source: 'Demo fallback' };
+
+    const defaults = { anchorDate: '2025-10-06', upDays: 1064, downDays: 364, sentimentScore: 35, liquidityScore: 40, alertBelow: 63000, alertAbove: 105000, alertNote: 'Almanac warning triggered' };
+    let settings = load('almanacSettings', defaults);
+
+    function load(key, fallback) { try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch { return fallback; } }
+    function save(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
+    function fmtUSD(n) { return '$' + Number(n).toLocaleString(undefined, { maximumFractionDigits: 0 }); }
+    function pct(n) { return `${Number(n).toFixed(2)}%`; }
+    function daysBetween(a,b) { return Math.floor((b - a) / 86400000); }
+    function addDays(date, days) { const d = new Date(date); d.setDate(d.getDate()+Number(days)); return d; }
+    function iso(d) { return d.toISOString().slice(0,10); }
+
+    async function fetchBTC() {
+      if (demoMode) return market;
+      try {
+        const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true&include_market_cap=true&include_24hr_vol=true');
+        if (!res.ok) throw new Error('API failed');
+        const data = await res.json();
+        market = {
+          price: data.bitcoin.usd,
+          change24h: data.bitcoin.usd_24h_change,
+          volume: data.bitcoin.usd_24h_vol,
+          marketCap: data.bitcoin.usd_market_cap,
+          source: 'CoinGecko public API'
+        };
+      } catch(e) {
+        market.source = 'Demo fallback — API unavailable';
+      }
+      return market;
+    }
+
+    function applySettingsToInputs() {
+      $('anchorDate').value = settings.anchorDate;
+      $('upDays').value = settings.upDays;
+      $('downDays').value = settings.downDays;
+      $('sentimentScore').value = settings.sentimentScore;
+      $('liquidityScore').value = settings.liquidityScore;
+      $('alertBelow').value = settings.alertBelow;
+      $('alertAbove').value = settings.alertAbove;
+      $('alertNote').value = settings.alertNote;
+    }
+
+    function saveSettings() {
+      settings = {
+        ...settings,
+        anchorDate: $('anchorDate').value,
+        upDays: Number($('upDays').value),
+        downDays: Number($('downDays').value),
+        sentimentScore: Number($('sentimentScore').value),
+        liquidityScore: Number($('liquidityScore').value)
+      };
+      save('almanacSettings', settings);
+      refreshAll();
+    }
+
+    function resetSettings() { settings = {...defaults}; save('almanacSettings', settings); applySettingsToInputs(); refreshAll(); }
+
+    function cycleInfo() {
+      const anchor = new Date(settings.anchorDate + 'T00:00:00');
+      const now = today();
+      const day = daysBetween(anchor, now);
+      const downEnd = addDays(anchor, settings.downDays);
+      const downProgress = Math.max(0, Math.min(100, (day / settings.downDays) * 100));
+      let phase = 'Pre-anchor / unknown';
+      if (day >= 0 && day <= settings.downDays) phase = 'Down-window / risk-off climate';
+      if (day > settings.downDays) phase = 'Post-down-window / accumulation watch';
+      if (day < 0) phase = 'Before anchor date';
+      return { day, phase, downEnd, downProgress };
+    }
+
+    function calculateRegime() {
+      const c = cycleInfo();
+      let score = 0;
+      if (market.change24h > 1) score += 15;
+      if (market.change24h < -1) score -= 15;
+      if (settings.sentimentScore > 60) score += 10;
+      if (settings.sentimentScore < 40) score -= 10;
+      if (settings.liquidityScore > 60) score += 15;
+      if (settings.liquidityScore < 45) score -= 15;
+      if (c.phase.includes('Down-window')) score -= 25;
+      if (c.phase.includes('accumulation')) score += 10;
+      if (score <= -35) return { label: 'Storm Warning', cls:'bad', score };
+      if (score <= -10) return { label: 'Risk-Off', cls:'warn', score };
+      if (score < 20) return { label: 'Neutral / Unconfirmed', cls:'info', score };
+      return { label: 'Risk-On', cls:'good', score };
+    }
+
+    function renderDashboard() {
+      $('btcPrice').textContent = fmtUSD(market.price);
+      $('btcChange').textContent = pct(market.change24h);
+      $('btcChange').className = market.change24h >= 0 ? 'good' : 'bad';
+      $('priceSource').textContent = market.source;
+
+      const c = cycleInfo();
+      const r = calculateRegime();
+      $('regime').textContent = r.label;
+      $('regime').className = r.cls;
+      $('weather').textContent = r.label;
+      $('weather').className = r.cls;
+      $('cycleSub').textContent = `Day ${c.day} from anchor`;
+      $('cycleDay').textContent = c.day;
+      $('cyclePhase').textContent = c.phase;
+      $('downProgress').textContent = `${c.downProgress.toFixed(1)}%`;
+      $('downWindowDates').textContent = `${settings.anchorDate} → ${iso(c.downEnd)}`;
+
+      $('priceState').textContent = market.change24h >= 0 ? 'Price Rising' : 'Price Falling';
+      $('priceState').className = 'verdict ' + (market.change24h >= 0 ? 'good' : 'bad');
+      $('priceStateText').textContent = market.change24h >= 0 ? 'Price is rising. Board asks whether volume and liquidity confirm it.' : 'Price is falling. Board asks whether this is controlled weakness or structural breakdown.';
+
+      const volRatio = market.volume / market.marketCap * 100;
+      $('volumeState').textContent = volRatio > 4 ? 'Active' : volRatio > 2 ? 'Thin' : 'Weak';
+      $('volumeState').className = 'verdict ' + (volRatio > 4 ? 'good' : volRatio > 2 ? 'warn' : 'bad');
+      $('volumeStateText').textContent = `Volume/market-cap proxy: ${volRatio.toFixed(2)}%. This is only a proxy, not full order-book liquidity.`;
+
+      $('sentimentState').textContent = settings.sentimentScore < 40 ? 'Fear' : settings.sentimentScore > 60 ? 'Greed' : 'Neutral';
+      $('sentimentState').className = 'verdict ' + (settings.sentimentScore < 40 ? 'bad' : settings.sentimentScore > 60 ? 'warn' : 'info');
+
+      renderCycleTimeline(c);
+      renderRules();
+      boardVerdict();
+      checkAlerts();
+      drawCharts();
+    }
+
+    function renderCycleTimeline(c) {
+      $('cycleTimeline').innerHTML = [
+        [`Anchor`, settings.anchorDate, 'Cycle starts from selected ATH/anchor.'],
+        [`Current`, iso(today()), c.phase],
+        [`Down-window end`, iso(c.downEnd), '364-day model completion area.'],
+        [`Next review`, 'Manual', 'Compare price, volume, liquidity and sentiment.']
+      ].map(x => `<div class="node"><strong>${x[0]} — ${x[1]}</strong><br><span style="color:var(--muted)">${x[2]}</span></div>`).join('');
+    }
+
+    function renderRules() {
+      const rules = [
+        'Price alone is an outcome, not evidence.',
+        'Bullish price action needs volume and liquidity confirmation.',
+        'During down-window, upside calls require stronger proof.',
+        'Altcoin upside during BTC weakness is guilty until proven independent.',
+        'Contradictions are logged by date, claim, level and later outcome.'
+      ];
+      $('ruleList').innerHTML = rules.map(r => `<li>${r}</li>`).join('');
+    }
+
+    function boardVerdict() {
+      const r = calculateRegime();
+      let reason = [];
+      if (market.change24h < 0) reason.push('price is weak'); else reason.push('price is up');
+      if (settings.liquidityScore < 45) reason.push('liquidity score is weak');
+      if (settings.sentimentScore < 40) reason.push('sentiment is fearful');
+      if (cycleInfo().phase.includes('Down-window')) reason.push('cycle position is hostile');
+      $('boardVerdict').textContent = r.score <= -10 ? 'Rejected / Unconfirmed' : 'Provisionally Approved';
+      $('boardVerdict').className = 'verdict ' + (r.score <= -35 ? 'bad' : r.score <= -10 ? 'warn' : 'good');
+      $('boardReason').textContent = `Board finding: ${reason.join(', ')}. Final weather score: ${r.score}.`;
+    }
+
+    function saveAlerts() {
+      settings.alertBelow = Number($('alertBelow').value);
+      settings.alertAbove = Number($('alertAbove').value);
+      settings.alertNote = $('alertNote').value;
+      save('almanacSettings', settings);
+      logAlert('Alert rules saved.');
+      refreshAll();
+    }
+
+    function logAlert(text) {
+      const logs = load('alertLogs', []);
+      logs.unshift({ date: new Date().toLocaleString(), text });
+      save('alertLogs', logs.slice(0, 20));
+      renderAlertLog();
+    }
+
+    function renderAlertLog() {
+      const logs = load('alertLogs', []);
+      $('alertLog').innerHTML = logs.length ? logs.map(l => `<div class="node"><strong>${l.date}</strong><br><span style="color:var(--muted)">${l.text}</span></div>`).join('') : '<p>No alerts yet.</p>';
+    }
+
+    function checkAlerts() {
+      if (market.price < settings.alertBelow) logAlert(`${settings.alertNote}: BTC below ${fmtUSD(settings.alertBelow)}. Current: ${fmtUSD(market.price)}.`);
+      if (market.price > settings.alertAbove) logAlert(`${settings.alertNote}: BTC above ${fmtUSD(settings.alertAbove)}. Current: ${fmtUSD(market.price)}.`);
+    }
+
+    function testAlert() { alert('BTC Almanac alert test.'); logAlert('Manual alert test triggered.'); }
+
+    function scoreAlts() {
+      let score = 0;
+      if ($('btcTrend').value === 'down') score += 35;
+      if ($('btcDom').value === 'rising') score += 30;
+      if ($('altStrength').value === 'weak') score += 30;
+      if (cycleInfo().phase.includes('Down-window')) score += 25;
+      let label = score >= 80 ? 'Absolute Idiocy Risk' : score >= 55 ? 'High Risk' : score >= 30 ? 'Unconfirmed' : 'Possible Alt Window';
+      $('altVerdict').textContent = label;
+      $('altVerdict').className = 'verdict ' + (score >= 80 ? 'bad' : score >= 55 ? 'warn' : score >= 30 ? 'info' : 'good');
+      $('altReason').textContent = `Alt risk score: ${score}. If BTC is down, dominance is rising, and Alt/BTC pairs are weak, “number go up” alt calls are not analysis — they are hope.`;
+    }
+
+    function addClaim() {
+      const claims = load('claims', []);
+      claims.unshift({ name: $('infName').value || 'Unknown', date: $('infDate').value || iso(today()), claim: $('infClaim').value || 'No claim text', score: Number($('infScore').value) });
+      save('claims', claims);
+      renderClaims();
+      $('infClaim').value = '';
+    }
+
+    function renderClaims() {
+      const claims = load('claims', []);
+      $('claimRows').innerHTML = claims.map(c => `<tr><td>${c.date}</td><td>${c.name}</td><td>${c.claim}</td><td>${c.score}%</td></tr>`).join('') || '<tr><td colspan="4">No claims saved yet.</td></tr>';
+    }
+
+    function generateReport() {
+      const c = cycleInfo(), r = calculateRegime();
+      const text = `BTC Almanac Report\nDate: ${new Date().toLocaleString()}\n\nPrice: ${fmtUSD(market.price)}\n24h Change: ${pct(market.change24h)}\nData Source: ${market.source}\n\nCycle Anchor: ${settings.anchorDate}\nCycle Day: ${c.day}\nDown Window: ${settings.anchorDate} to ${iso(c.downEnd)}\nDown Progress: ${c.downProgress.toFixed(1)}%\n\nSentiment Score: ${settings.sentimentScore}/100\nLiquidity Score: ${settings.liquidityScore}/100\n\nWeather Verdict: ${r.label}\nBoard Score: ${r.score}\n\nBoard Finding:\nPrice alone is not evidence. The board requires confirmation from volume, sentiment, liquidity and cycle position. Current conditions suggest: ${$('boardReason').textContent}\n\nAlmanac Note:\nIf BTC is weak and liquidity is thin, altcoin upside calls require exceptional proof. Without independent strength, they are likely drift-dependent claims.`;
+      $('reportText').value = text;
+    }
+
+    function copyReport() { $('reportText').select(); document.execCommand('copy'); }
+
+    function drawCharts() {
+      const ctx = $('btcChart');
+      const base = market.price;
+      const labels = ['-6d','-5d','-4d','-3d','-2d','-1d','Now'];
+      const data = labels.map((_,i) => Math.round(base * (1 + ((i-3) * 0.006) + Math.sin(i) * 0.01)));
+      if (window.btcChartObj) window.btcChartObj.destroy();
+      window.btcChartObj = new Chart(ctx, { type: 'line', data: { labels, datasets: [{ label:'BTC synthetic mini trend', data, tension:.35 }] }, options: { responsive:true, plugins:{ legend:{ labels:{ color:'#eef4ff' } } }, scales:{ x:{ ticks:{ color:'#9fb0ca' }, grid:{ color:'rgba(255,255,255,.08)' } }, y:{ ticks:{ color:'#9fb0ca' }, grid:{ color:'rgba(255,255,255,.08)' } } } } });
+
+      const fctx = $('fractalChart');
+      if (window.fractalChartObj) window.fractalChartObj.destroy();
+      window.fractalChartObj = new Chart(fctx, { type:'line', data:{ labels:['0%','15%','30%','45%','60%','75%','100%'], datasets:[{ label:'2017-18 normalised', data:[100,88,72,61,48,39,31], tension:.35 },{ label:'2021-22 normalised', data:[100,92,75,66,52,42,35], tension:.35 },{ label:'Current model', data:[100,94,83,70,58,47,38], tension:.35 }] }, options:{ responsive:true, plugins:{ legend:{ labels:{ color:'#eef4ff' } } }, scales:{ x:{ ticks:{ color:'#9fb0ca' }, grid:{ color:'rgba(255,255,255,.08)' } }, y:{ ticks:{ color:'#9fb0ca' }, grid:{ color:'rgba(255,255,255,.08)' } } } } });
+    }
+
+    async function refreshAll() { await fetchBTC(); renderDashboard(); generateReport(); }
+    function toggleDemoMode() { demoMode = !demoMode; logAlert(`Mode changed: ${demoMode ? 'Demo fallback' : 'API first'}`); refreshAll(); }
+
+    document.querySelectorAll('.navlinks a').forEach(a => a.addEventListener('click', () => {
+      document.querySelectorAll('.navlinks a').forEach(x => x.classList.remove('active'));
+      a.classList.add('active');
+    }));
+
+    applySettingsToInputs();
+    renderAlertLog();
+    renderClaims();
+    refreshAll();
+  </script>
+</body>
+</html>
