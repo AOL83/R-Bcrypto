@@ -66,7 +66,7 @@ main{max-width:1250px;margin:0 auto;padding:18px 14px 40px}.page{display:none;an
 </style>
 </head><body>
 <canvas id="matrix"></canvas><div class="scan"></div><div class="runner"></div>
-<header class="topbar"><div class="brand">THE BTC ALMANAC</div><div class="topControls"><button class="soundToggle" id="soundToggle" aria-pressed="false">Sound: OFF</button><button class="hamb" id="openNav">☰</button></div></header>
+<header class="topbar"><div class="brand">THE BTC ALMANAC</div><div class="topControls"><button class="soundToggle" id="musicToggle" aria-pressed="false">Music: OFF</button><button class="soundToggle" id="soundToggle" aria-pressed="false">FX: OFF</button><button class="hamb" id="openNav">☰</button></div></header>
 <div class="overlay" id="overlay"></div><aside class="drawer" id="drawer"><h2>Navigation</h2><button class="navbtn active" data-page="dashboard">Dashboard</button><button class="navbtn" data-page="weather">Weather</button><button class="navbtn" data-page="engine">Indicator Engine</button><button class="navbtn" data-page="wheel">Wheel Indicator</button><button class="navbtn" data-page="deviation">Deviation Index</button><button class="navbtn" data-page="compass">Compass</button><button class="navbtn" data-page="prophecy">Prophecy Window</button><button class="navbtn" data-page="zero">Liquidity Machine</button><button class="navbtn" data-page="trust">Trust Engine</button><button class="navbtn" data-page="altvector">Altcoin Vector</button><button class="navbtn" data-page="reports">Reports</button></aside>
 <div class="statusRibbon" aria-label="Current BTC status"><div class="ribbonCell"><b>Bias</b><span class="bad">Defensive</span></div><div class="ribbonCell"><b>Phase</b><span class="warn">Post-Peak</span></div><div class="ribbonCell"><b>Confidence</b><span class="blue">78%</span></div><div class="ribbonCell"><b>Invalidation</b><span class="bad">Not Triggered</span></div><div class="ribbonCell"><b>Next Target</b><span class="warn">56.7K</span></div></div>
 <main>
@@ -103,6 +103,52 @@ main{max-width:1250px;margin:0 auto;padding:18px 14px 40px}.page{display:none;an
 // ---------- Tasteful Almanac Sound System (Web Audio, default OFF) ----------
 let soundEnabled=false, audioCtx=null, ambientNodes=null, dashboardPulsePlayed=false;
 const soundToggle=document.getElementById('soundToggle');
+const musicToggle=document.getElementById('musicToggle');
+
+// ---------- Real MP3 Music Player (ONE TUNE, separate from FX, default OFF) ----------
+// Keep this file beside index.html exactly named: Neon Ledger.mp3
+let musicEnabled=false;
+const siteMusic=new Audio('Neon Ledger.mp3');
+siteMusic.preload='auto';
+siteMusic.volume=0.18;
+siteMusic.loop=true;
+function updateMusicToggle(){
+  if(!musicToggle) return;
+  musicToggle.classList.toggle('on',musicEnabled);
+  musicToggle.textContent=musicEnabled ? 'Music: ON · Neon Ledger' : 'Music: OFF';
+  musicToggle.setAttribute('aria-pressed',musicEnabled?'true':'false');
+}
+async function startSiteMusic(){
+  try{
+    musicEnabled=true;
+    updateMusicToggle();
+    await siteMusic.play();
+  }catch(err){
+    musicEnabled=false;
+    updateMusicToggle();
+    console.error('Music failed:',err);
+    alert('Music failed to load. Make sure Neon Ledger.mp3 is in the same folder as index.html.');
+  }
+}
+function stopSiteMusic(){
+  musicEnabled=false;
+  siteMusic.pause();
+  siteMusic.currentTime=0;
+  updateMusicToggle();
+}
+siteMusic.addEventListener('error',()=>{
+  musicEnabled=false;
+  updateMusicToggle();
+  alert('Music file not found or blocked. Check: index.html and Neon Ledger.mp3 must be in the same folder.');
+});
+if(musicToggle){
+  updateMusicToggle();
+  musicToggle.addEventListener('click',()=>{
+    if(musicEnabled) stopSiteMusic();
+    else startSiteMusic();
+  });
+}
+
 function getAudioCtx(){
   if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
   if(audioCtx.state==='suspended') audioCtx.resume();
@@ -166,7 +212,7 @@ if(soundToggle){
   soundToggle.addEventListener('click',()=>{
     soundEnabled=!soundEnabled;
     soundToggle.classList.toggle('on',soundEnabled);
-    soundToggle.textContent=soundEnabled?'Sound: ON':'Sound: OFF';
+    soundToggle.textContent=soundEnabled?'FX: ON':'FX: OFF';
     soundToggle.setAttribute('aria-pressed',soundEnabled?'true':'false');
     if(soundEnabled){getAudioCtx(); startAmbient(); playCue('dashboard'); dashboardPulsePlayed=true; setTimeout(()=>playCue('warning'),260)} else stopAmbient();
   });
