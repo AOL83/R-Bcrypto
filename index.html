@@ -273,7 +273,7 @@ function analyseAlt(){
   const btcPenalty=getBTCClimatePenalty(climate,sign);
   const corr=altHistoryMetrics.correlation, beta=altHistoryMetrics.beta;
   let priceRisk=pos*58 + (pos>0.80?20:0) + (drawdown<0.25?12:0);
-  let corrPenalty=isFinite(corr)?Math.max(0,corr)*12:6; let betaPenalty=isFinite(beta)?clamp((beta-1)*10,0,20):4;
+  let corrPenalty=Number.isFinite(corr)?Math.max(0,corr)*12:6; let betaPenalty=Number.isFinite(beta)?clamp((beta-1)*10,0,20):4;
   let compressionBonus=(climate==='compression' && pos<0.35)?22:0; let expansionBonus=(climate==='expansion' && [2,3,4,5].includes(Number(sign)))?18:0;
   let risk=clamp(priceRisk + btcPenalty*0.65 + corrPenalty + betaPenalty - compressionBonus - expansionBonus,0,100);
   let reward=clamp((1-pos)*62 + drawdown*22 + compressionBonus + expansionBonus - btcPenalty*0.35,0,100);
@@ -282,13 +282,13 @@ function analyseAlt(){
   document.getElementById('altVector').textContent=vector;
   document.getElementById('altRisk').textContent=result.risk+'%';
   document.getElementById('altReward').textContent=result.reward+'%';
-  document.getElementById('altCorr').textContent=isFinite(corr)?corr.toFixed(2):'Manual';
+  document.getElementById('altCorr').textContent=Number.isFinite(corr)?corr.toFixed(2):'Manual';
   document.getElementById('trafficReward').style.width=result.reward+'%';
   document.getElementById('trafficRisk').style.width=result.risk+'%';
   document.getElementById('trafficNeutral').style.width=Math.max(0,100-result.reward-result.risk)+'%';
   const english = result.risk>=70?`Fresh longs are hostile here. ${coinSymbols[asset]} is being judged against BTC ${climate} conditions and the vector says ${vector}.` : result.reward>result.risk?`Reward currently beats risk, but only because price location and BTC phase are less hostile. Still wait for confirmation.` : `Mixed read. Do not treat a bounce as a confirmed trend until BTC climate improves.`;
   document.getElementById('altPlainEnglish').textContent=english;
-  document.getElementById('altReadout').textContent=`ASSET: ${coinSymbols[asset]}\nCURRENT: $${num(current)}\nATH: $${num(ath)}\nATL: $${num(atl)}\nPOSITION FROM ATL→ATH: ${pct(pos)}\nDRAWDOWN FROM ATH: ${pct(drawdown)}\nBTC CLIMATE: ${climate.toUpperCase()}\nBTC SIGN: ${sign}\nCORRELATION TO BTC: ${isFinite(corr)?corr.toFixed(3):'manual / not loaded'}\nBETA TO BTC: ${isFinite(beta)?beta.toFixed(3):'manual / not loaded'}\nVECTOR: ${vector}\nRISK: ${result.risk}%\nREWARD: ${result.reward}%\n\nINTERPRETATION: ${english}`;
+  document.getElementById('altReadout').textContent=`ASSET: ${coinSymbols[asset]}\nCURRENT: $${num(current)}\nATH: $${num(ath)}\nATL: $${num(atl)}\nPOSITION FROM ATL→ATH: ${pct(pos)}\nDRAWDOWN FROM ATH: ${pct(drawdown)}\nBTC CLIMATE: ${climate.toUpperCase()}\nBTC SIGN: ${sign}\nCORRELATION TO BTC: ${Number.isFinite(corr)?corr.toFixed(3):'manual / not loaded'}\nBETA TO BTC: ${Number.isFinite(beta)?beta.toFixed(3):'manual / not loaded'}\nVECTOR: ${vector}\nRISK: ${result.risk}%\nREWARD: ${result.reward}%\n\nINTERPRETATION: ${english}`;
   status.innerHTML=`Analysis complete for <span class="good">${coinSymbols[asset]}</span>. Source: ${altHistoryMetrics.source==='live'?'<span class="liveBadge">LIVE DATA</span>':'<span class="offlineBadge">MANUAL DATA</span>'}`;
   updateAltCharts(result);
 }
