@@ -9,7 +9,7 @@
 :root{--bg:#020504;--panel:rgba(4,14,18,.88);--panel2:rgba(5,20,30,.94);--line:rgba(102,231,255,.28);--text:#eaffff;--muted:#a6bbc8;--green:#39ff88;--yellow:#ffea61;--blue:#66e7ff;--red:#ff3f65;--pink:#ff4fd8;--violet:#9d6bff;--radius:22px;--shadow:0 0 30px rgba(102,231,255,.14)}
 *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:radial-gradient(circle at top left,rgba(0,255,136,.14),transparent 35%),radial-gradient(circle at 80% 15%,rgba(102,231,255,.12),transparent 38%),var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif;overflow-x:hidden} 
 #matrix{position:fixed;inset:0;z-index:-3;opacity:.26}.scan{position:fixed;inset:0;pointer-events:none;z-index:-2;background:linear-gradient(180deg,transparent,rgba(102,231,255,.05),transparent);background-size:100% 16px;mix-blend-mode:screen}.runner{position:fixed;top:0;left:-30%;width:30%;height:2px;background:linear-gradient(90deg,transparent,var(--blue),var(--green),var(--yellow),transparent);box-shadow:0 0 18px var(--blue);animation:run 4.6s linear infinite;z-index:5}@keyframes run{to{left:110%}}
-.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:rgba(1,6,9,.84);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}.brand{font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--green);text-shadow:0 0 14px rgba(57,255,136,.7)}.hamb{border:1px solid var(--blue);background:rgba(102,231,255,.08);color:var(--blue);border-radius:12px;padding:10px 13px;font-size:22px;box-shadow:0 0 14px rgba(102,231,255,.2)}
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:rgba(1,6,9,.84);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}.topControls{display:flex;align-items:center;gap:10px}.soundToggle{border:1px solid rgba(102,231,255,.45);background:rgba(102,231,255,.07);color:var(--blue);border-radius:999px;padding:10px 13px;font-weight:950;letter-spacing:.04em;cursor:pointer;box-shadow:0 0 14px rgba(102,231,255,.14)}.soundToggle.on{border-color:var(--green);color:var(--green);box-shadow:0 0 18px rgba(57,255,136,.22)}.brand{font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--green);text-shadow:0 0 14px rgba(57,255,136,.7)}.hamb{border:1px solid var(--blue);background:rgba(102,231,255,.08);color:var(--blue);border-radius:12px;padding:10px 13px;font-size:22px;box-shadow:0 0 14px rgba(102,231,255,.2)}
 .drawer{position:fixed;top:0;right:-330px;width:min(330px,88vw);height:100dvh;background:linear-gradient(180deg,rgba(3,10,16,.98),rgba(2,5,7,.98));z-index:40;border-left:1px solid var(--line);transition:.28s ease;padding:22px;box-shadow:-20px 0 50px rgba(0,0,0,.55);overflow-y:auto}.drawer.open{right:0}.overlay{position:fixed;inset:0;background:rgba(0,0,0,.56);z-index:30;display:none}.overlay.show{display:block}.drawer h2{margin:0 0 18px;color:var(--yellow);font-size:1rem;letter-spacing:.12em}.navbtn{display:block;width:100%;text-align:left;margin:9px 0;padding:14px 15px;border-radius:16px;border:1px solid rgba(102,231,255,.2);background:rgba(102,231,255,.05);color:var(--text);font-weight:800;cursor:pointer}.navbtn.active,.navbtn:hover{border-color:var(--green);color:var(--green);box-shadow:0 0 16px rgba(57,255,136,.22)}
 main{max-width:1250px;margin:0 auto;padding:18px 14px 40px}.page{display:none;animation:fade .34s ease}.page.active{display:block}@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}.hero{padding:24px;border-radius:28px;background:linear-gradient(135deg,rgba(57,255,136,.10),rgba(102,231,255,.06) 48%,rgba(255,234,97,.07));border:1px solid var(--line);box-shadow:var(--shadow);position:relative;overflow:hidden}.hero:before,.glowbox:before,.footer:before,.social:before{content:"";position:absolute;inset:0;padding:1px;border-radius:inherit;background:conic-gradient(from var(--angle),transparent,var(--green),var(--blue),var(--yellow),var(--pink),transparent);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:borderSpin 5s linear infinite;pointer-events:none}@property --angle{syntax:'<angle>';initial-value:0deg;inherits:false}@keyframes borderSpin{to{--angle:360deg}}.eyebrow{color:var(--blue);font-weight:900;letter-spacing:.18em;text-transform:uppercase;font-size:.76rem}.hero h1{font-size:clamp(2rem,7vw,5rem);line-height:.92;margin:12px 0;text-shadow:0 0 22px rgba(102,231,255,.35)}.bigverdict{display:inline-block;background:rgba(255,63,101,.15);border:1px solid var(--red);color:#ffdce4;border-radius:999px;padding:10px 16px;font-weight:900;box-shadow:0 0 22px rgba(255,63,101,.22)}
 .grid{display:grid;gap:14px;margin-top:16px}.grid.two{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}.grid.three{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}.card,.glowbox{position:relative;border-radius:var(--radius);background:var(--panel);border:1px solid var(--line);padding:18px;box-shadow:var(--shadow);overflow:hidden}.card h3,.glowbox h3{margin:0 0 10px;color:var(--yellow)}.card p{color:var(--muted);line-height:1.55}.metric{font-size:2rem;font-weight:950}.muted{color:var(--muted)}.pill{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:rgba(102,231,255,.05);font-weight:800;margin:3px}.good{color:var(--green)}.warn{color:var(--yellow)}.bad{color:var(--red)}.blue{color:var(--blue)}
@@ -66,7 +66,7 @@ main{max-width:1250px;margin:0 auto;padding:18px 14px 40px}.page{display:none;an
 </style>
 </head><body>
 <canvas id="matrix"></canvas><div class="scan"></div><div class="runner"></div>
-<header class="topbar"><div class="brand">THE BTC ALMANAC</div><button class="hamb" id="openNav">☰</button></header>
+<header class="topbar"><div class="brand">THE BTC ALMANAC</div><div class="topControls"><button class="soundToggle" id="soundToggle" aria-pressed="false">Sound: OFF</button><button class="hamb" id="openNav">☰</button></div></header>
 <div class="overlay" id="overlay"></div><aside class="drawer" id="drawer"><h2>Navigation</h2><button class="navbtn active" data-page="dashboard">Dashboard</button><button class="navbtn" data-page="weather">Weather</button><button class="navbtn" data-page="engine">Indicator Engine</button><button class="navbtn" data-page="wheel">Wheel Indicator</button><button class="navbtn" data-page="deviation">Deviation Index</button><button class="navbtn" data-page="compass">Compass</button><button class="navbtn" data-page="prophecy">Prophecy Window</button><button class="navbtn" data-page="zero">Liquidity Machine</button><button class="navbtn" data-page="trust">Trust Engine</button><button class="navbtn" data-page="altvector">Altcoin Vector</button><button class="navbtn" data-page="reports">Reports</button></aside>
 <div class="statusRibbon" aria-label="Current BTC status"><div class="ribbonCell"><b>Bias</b><span class="bad">Defensive</span></div><div class="ribbonCell"><b>Phase</b><span class="warn">Post-Peak</span></div><div class="ribbonCell"><b>Confidence</b><span class="blue">78%</span></div><div class="ribbonCell"><b>Invalidation</b><span class="bad">Not Triggered</span></div><div class="ribbonCell"><b>Next Target</b><span class="warn">56.7K</span></div></div>
 <main>
@@ -99,9 +99,91 @@ main{max-width:1250px;margin:0 auto;padding:18px 14px 40px}.page{display:none;an
 <footer class="footer"><div class="eyebrow">THE BTC ALMANAC</div><h3>A Weather System for the Digital Age</h3><p class="muted">Static site. Visual indicator. Liquidity-first decision system.</p><div class="socials"><a class="social" href="#">Substack</a><a class="social" href="#">X / Twitter</a><a class="social" href="#">YouTube</a><a class="social" href="#">GitHub</a></div></footer>
 </main>
 <script>
-const drawer=document.getElementById('drawer'),overlay=document.getElementById('overlay');document.getElementById('openNav').onclick=()=>{drawer.classList.add('open');overlay.classList.add('show')};overlay.onclick=()=>{drawer.classList.remove('open');overlay.classList.remove('show')};document.querySelectorAll('.navbtn').forEach(b=>b.onclick=()=>{document.querySelectorAll('.navbtn').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(b.dataset.page).classList.add('active');drawer.classList.remove('open');overlay.classList.remove('show');setTimeout(resizeCharts,80)});
 
-document.querySelectorAll('.pageLinkMini,.dashJump').forEach(btn=>btn.addEventListener('click',()=>{const target=btn.dataset.jump;document.querySelectorAll('.navbtn').forEach(x=>x.classList.toggle('active',x.dataset.page===target));document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(target)?.classList.add('active');drawer.classList.remove('open');overlay.classList.remove('show');window.scrollTo({top:0,behavior:'smooth'});setTimeout(resizeCharts,80)}));
+// ---------- Tasteful Almanac Sound System (Web Audio, default OFF) ----------
+let soundEnabled=false, audioCtx=null, ambientNodes=null, dashboardPulsePlayed=false;
+const soundToggle=document.getElementById('soundToggle');
+function getAudioCtx(){
+  if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+  if(audioCtx.state==='suspended') audioCtx.resume();
+  return audioCtx;
+}
+function masterGain(level=0.06){
+  const ac=getAudioCtx();
+  const g=ac.createGain();
+  g.gain.value=level;
+  g.connect(ac.destination);
+  return g;
+}
+function tone(freq=220,dur=.15,type='sine',vol=.035,when=0){
+  if(!soundEnabled) return;
+  const ac=getAudioCtx(), o=ac.createOscillator(), g=ac.createGain();
+  const t=ac.currentTime+when;
+  o.type=type; o.frequency.setValueAtTime(freq,t);
+  g.gain.setValueAtTime(0.0001,t);
+  g.gain.exponentialRampToValueAtTime(vol,t+0.012);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  o.connect(g); g.connect(ac.destination); o.start(t); o.stop(t+dur+.03);
+}
+function noiseCue(dur=.25,vol=.025,filter=300,type='lowpass'){
+  if(!soundEnabled) return;
+  const ac=getAudioCtx(), len=Math.max(1,Math.floor(ac.sampleRate*dur));
+  const buf=ac.createBuffer(1,len,ac.sampleRate), data=buf.getChannelData(0);
+  for(let i=0;i<len;i++) data[i]=(Math.random()*2-1)*(1-i/len);
+  const src=ac.createBufferSource(); src.buffer=buf;
+  const f=ac.createBiquadFilter(); f.type=type; f.frequency.value=filter;
+  const g=ac.createGain(); g.gain.value=vol;
+  src.connect(f); f.connect(g); g.connect(ac.destination); src.start();
+}
+function playCue(name, detail=''){
+  if(!soundEnabled) return;
+  if(name==='page'){tone(520,.08,'sine',.018); tone(860,.13,'triangle',.014,.05)}
+  if(name==='dashboard'){tone(90,.28,'sine',.025); tone(220,.13,'triangle',.02,.12); tone(440,.1,'sine',.015,.22)}
+  if(name==='warning'){tone(55,.55,'sawtooth',.018); noiseCue(.35,.014,140,'lowpass'); setTimeout(()=>noiseCue(.06,.012,2400,'highpass'),90); setTimeout(()=>noiseCue(.05,.01,2600,'highpass'),190)}
+  if(name==='wheel'){tone(180,.045,'square',.012); setTimeout(()=>tone(220,.045,'square',.01),70); setTimeout(()=>tone(260,.045,'square',.009),140)}
+  if(name==='compass'){tone(300,.055,'triangle',.014); setTimeout(()=>noiseCue(.28,.012,700,'bandpass'),80)}
+  if(name==='trust'){tone(85,.35,'sine',.018); setTimeout(()=>tone(130,.12,'triangle',.014),140)}
+  if(name==='liquidity'){tone(130,.2,'sine',.012); noiseCue(.36,.012,520,'bandpass')}
+  if(name==='altSuccess'){tone(660,.12,'sine',.018); tone(990,.18,'triangle',.015,.08)}
+  if(name==='altRisk'){tone(110,.28,'sawtooth',.022); tone(82,.38,'sine',.018,.12)}
+  if(name==='altKlaxon'){tone(220,.12,'square',.022); tone(150,.18,'square',.02,.15); tone(110,.22,'sawtooth',.018,.34)}
+}
+function startAmbient(){
+  if(!soundEnabled || ambientNodes) return;
+  const ac=getAudioCtx();
+  const g=ac.createGain(); g.gain.value=0.018; g.connect(ac.destination);
+  const low=ac.createOscillator(); low.type='sine'; low.frequency.value=48;
+  const pulse=ac.createOscillator(); pulse.type='triangle'; pulse.frequency.value=.75;
+  const pulseGain=ac.createGain(); pulseGain.gain.value=0.008;
+  low.connect(g); pulse.connect(pulseGain); pulseGain.connect(g);
+  low.start(); pulse.start(); ambientNodes={low,pulse,g,pulseGain};
+}
+function stopAmbient(){
+  if(!ambientNodes) return;
+  try{ambientNodes.g.gain.exponentialRampToValueAtTime(0.0001,getAudioCtx().currentTime+.2); setTimeout(()=>{try{ambientNodes.low.stop();ambientNodes.pulse.stop()}catch(e){} ambientNodes=null;},260)}catch(e){ambientNodes=null}
+}
+if(soundToggle){
+  soundToggle.addEventListener('click',()=>{
+    soundEnabled=!soundEnabled;
+    soundToggle.classList.toggle('on',soundEnabled);
+    soundToggle.textContent=soundEnabled?'Sound: ON':'Sound: OFF';
+    soundToggle.setAttribute('aria-pressed',soundEnabled?'true':'false');
+    if(soundEnabled){getAudioCtx(); startAmbient(); playCue('dashboard'); dashboardPulsePlayed=true; setTimeout(()=>playCue('warning'),260)} else stopAmbient();
+  });
+}
+function pageCue(page){
+  if(!soundEnabled) return;
+  playCue('page');
+  if(page==='dashboard' && !dashboardPulsePlayed){playCue('dashboard'); dashboardPulsePlayed=true; setTimeout(()=>playCue('warning'),260)}
+  if(page==='wheel') setTimeout(()=>playCue('wheel'),80);
+  if(page==='compass') setTimeout(()=>playCue('compass'),80);
+  if(page==='trust') setTimeout(()=>playCue('trust'),80);
+  if(page==='zero') setTimeout(()=>playCue('liquidity'),80);
+}
+
+const drawer=document.getElementById('drawer'),overlay=document.getElementById('overlay');document.getElementById('openNav').onclick=()=>{drawer.classList.add('open');overlay.classList.add('show')};overlay.onclick=()=>{drawer.classList.remove('open');overlay.classList.remove('show')};document.querySelectorAll('.navbtn').forEach(b=>b.onclick=()=>{document.querySelectorAll('.navbtn').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(b.dataset.page).classList.add('active');pageCue(b.dataset.page);drawer.classList.remove('open');overlay.classList.remove('show');setTimeout(resizeCharts,80)});
+
+document.querySelectorAll('.pageLinkMini,.dashJump').forEach(btn=>btn.addEventListener('click',()=>{const target=btn.dataset.jump;document.querySelectorAll('.navbtn').forEach(x=>x.classList.toggle('active',x.dataset.page===target));document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(target)?.classList.add('active');pageCue(target);drawer.classList.remove('open');overlay.classList.remove('show');window.scrollTo({top:0,behavior:'smooth'});setTimeout(resizeCharts,80)}));
 const c=document.getElementById('matrix'),ctx=c.getContext('2d');function size(){c.width=innerWidth;c.height=innerHeight}size();addEventListener('resize',size);let cols=[],font=16;function init(){cols=Array(Math.floor(c.width/font)).fill(1)}init();addEventListener('resize',init);setInterval(()=>{ctx.fillStyle='rgba(2,5,4,.12)';ctx.fillRect(0,0,c.width,c.height);ctx.fillStyle=['#39ff88','#66e7ff','#ffea61'][Math.floor(Math.random()*3)];ctx.font=font+'px monospace';for(let i=0;i<cols.length;i++){let text='BTC'[Math.floor(Math.random()*3)];ctx.fillText(text,i*font,cols[i]*font);if(cols[i]*font>c.height&&Math.random()>.975)cols[i]=0;cols[i]++}},45);
 const signs=['Ignition','Structure','Expansion','Participation','Acceleration','Euphoria','Distribution','Weakness','Exhaustion','Capitulation','Despair','Compression'];document.getElementById('signGrid').innerHTML=signs.map((s,i)=>`<div class="sign ${i===8?'active':i===9?'next':''}"><b>${i+1}. ${s}</b><br><span class="muted">${i===8?'Current: final attempts, momentum fades':i===9?'Next: sharp downward moves':'Phase behaviour'}</span></div>`).join('');
 let charts=[];
@@ -305,6 +387,7 @@ function analyseAlt(){
   document.getElementById('altPlainEnglish').textContent=english;
   document.getElementById('altReadout').textContent=`ASSET: ${coinSymbols[asset]}\nCURRENT: $${num(current)}\nATH: $${num(ath)}\nATL: $${num(atl)}\nPOSITION FROM ATL→ATH: ${pct(pos)}\nDRAWDOWN FROM ATH: ${pct(drawdown)}\nBTC CLIMATE: ${climate.toUpperCase()}\nBTC SIGN: ${sign}\nCORRELATION TO BTC: ${isFinite(corr)?corr.toFixed(3):'manual / not loaded'}\nBETA TO BTC: ${isFinite(beta)?beta.toFixed(3):'manual / not loaded'}\nVECTOR: ${vector}\nRISK: ${result.risk}%\nREWARD: ${result.reward}%\n\nINTERPRETATION: ${english}`;
   status.innerHTML=`Analysis complete for <span class="good">${coinSymbols[asset]}</span>. Source: ${altHistoryMetrics.source==='live'?'<span class="liveBadge">LIVE DATA</span>':'<span class="offlineBadge">MANUAL DATA</span>'}`;
+  if(['DEAD CAT','AVOID LONGS'].includes(vector)) playCue('altKlaxon'); else if(result.reward>result.risk) playCue('altSuccess'); else playCue('altRisk');
   updateAltCharts(result);
 }
 async function loadAltLive(){
