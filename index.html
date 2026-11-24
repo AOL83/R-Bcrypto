@@ -13,6 +13,157 @@
 
 
 
+P
+buy
+=
+V
+buy
+V
+buy
++
+V
+sell
+×
+100
+  
+  
+ 
+ 
+ 
+
+C
+V
+D
+=
+∑
+V
+buy
+−
+∑
+V
+sell
+  
+ 
+
+Δ
+O
+I
+=
+O
+I
+t
+−
+O
+I
+t
+−
+1
+O
+I
+t
+−
+1
+×
+100
+ 
+  
+ 
+ 
+
+I
+=
+B
+−
+A
+B
++
+A
+×
+100
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -785,13 +936,14 @@ const groups={&#x27;Cycle model&#x27;:[[&#x27;anchor&#x27;,&#x27;Anchor date&#x2
 function fields(){let el=$(&#x27;fields&#x27;);el.replaceChildren();for(let [group,items] of Object.entries(groups)){let h=document.createElement(&#x27;h4&#x27;);h.textContent=group;el.append(h);for(let [key,title,type,min,max] of items){let l=document.createElement(&#x27;label&#x27;),i=document.createElement(&#x27;input&#x27;);i.type=type;l.textContent=title;if(type===&#x27;checkbox&#x27;)i.checked=cfg[key];else i.value=cfg[key];if(min!==undefined){i.min=min;i.max=max;i.step=&#x27;any&#x27;}i.onchange=()=&gt;{if(type===&#x27;number&#x27;){if(!i.value||!i.checkValidity()){i.value=cfg[key];return}cfg[key]=+i.value}else if(type===&#x27;date&#x27;){if(!i.value)return;cfg[key]=i.value}else cfg[key]=type===&#x27;checkbox&#x27;?i.checked:i.value;update()};l.append(i);el.append(l)}}let h=document.createElement(&#x27;h4&#x27;);h.textContent=&#x27;Manual pivot calibration&#x27;;el.append(h);cfg.pivots.forEach((p,j)=&gt;{let row=document.createElement(&#x27;div&#x27;);row.className=&#x27;pivot&#x27;;let type=document.createElement(&#x27;span&#x27;);type.textContent=p[2]?&#x27;L&#x27;:&#x27;H&#x27;;type.className=p[2]?&#x27;green&#x27;:&#x27;red&#x27;;row.append(type);for(let [idx,t] of [[3,&#x27;checkbox&#x27;],[0,&#x27;date&#x27;],[1,&#x27;number&#x27;]]){let i=document.createElement(&#x27;input&#x27;);i.type=t;if(t===&#x27;checkbox&#x27;)i.checked=p[idx];else i.value=p[idx];if(t===&#x27;number&#x27;){i.min=.0001;i.step=&#x27;any&#x27;}i.onchange=()=&gt;{if(t===&#x27;number&#x27;&amp;&amp;(!i.value||!i.checkValidity())||t===&#x27;date&#x27;&amp;&amp;!i.value)return;p[idx]=t===&#x27;checkbox&#x27;?i.checked:t===&#x27;number&#x27;?+i.value:i.value;update()};row.append(i)}el.append(row)})}
 $(&#x27;settings&#x27;).onclick=()=&gt;{$(&#x27;config&#x27;).hidden=!$(&#x27;config&#x27;).hidden};$(&#x27;close&#x27;).onclick=()=&gt;{$(&#x27;config&#x27;).hidden=true};$(&#x27;defaults&#x27;).onclick=()=&gt;{cfg=structuredClone(E.defaults);fields();update(true)};fields();update(true);load();setInterval(()=&gt;{if(!source.startsWith(&#x27;Local CSV&#x27;)&amp;&amp;!source.startsWith(&#x27;CSV&#x27;))load()},300000);
 &lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe><p class="obs-note">Original supplied Almanac JavaScript port. Market candles require a reachable data feed or CSV import; scenarios are not verified forecasts.</p></div>
+<section id="btc-plumbing" class="card" style="margin-top:16px"><div class="eyebrow">BTC market microstructure · independent measurements</div><h2>🔧 THE PLUMBING ROOM</h2><p>Kraken BTC/USD spot and Binance BTCUSDT perpetual are separate markets. Session measurements only; no market-wide totals.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="actionBtn" id="pl-start">Start live monitoring</button><button class="actionBtn secondary" id="pl-stop" disabled>Stop</button><button class="actionBtn secondary" id="pl-refresh">Refresh snapshots</button><button class="actionBtn secondary" id="pl-export">Export readings</button></div><p id="pl-health" role="status">Not connected. Start monitoring or refresh snapshots.</p><div id="pl-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:10px"></div><div class="card" style="margin-top:12px"><h3>Observed spot delta · rolling five minutes</h3><canvas id="pl-chart" style="width:100%;height:180px!important;display:block" aria-label="Rolling spot trade delta history"></canvas><p id="pl-coverage">No samples.</p></div><p class="muted">ETF flows, market-wide liquidations and liquidation heatmaps: unavailable — no verified source configured. Order-book depth is visible liquidity, not executed trades. No trade recommendations or order execution.</p></section>
 <div class="grid two"><div class="card"><h3>Latest dispatch</h3><span class='obs-tag'>Editorial · supplied title</span><h2>Idiot's Guide to Fixing This Shit</h2><p>Systems &amp; Society. Original article link and publication evidence pending.</p><button type="button" class="pageLinkMini" data-obs-page="editorial">Editorial desk</button></div><div class="card"><h3>Bitcoin feature</h3><span class='obs-tag'>Research · supplied title</span><h2>Nobody Could Have Known?</h2><p>Explore the publication chronology and evidence register.</p><button type="button" class="pageLinkMini" data-obs-page="receipts">Open receipts</button></div></div>
 <div class="grid three"><div class="card"><h3>⚙ Inventions</h3><p>Hydro House · Survival Capsule</p><button type="button" class="pageLinkMini" data-obs-page="workshop">Workshop</button></div><div class="card"><h3>♾ Philosophy & AI</h3><p>Identity, classification and automation</p><button type="button" class="pageLinkMini" data-obs-page="philosophy">Thinking room</button></div><div class="card"><h3>🍽 CHECK, PLEASE</h3><p>Economics, satire and Monday Roast</p><button type="button" class="pageLinkMini" data-obs-page="editorial">Editorial desk</button></div></div></section><section class="page" id="receipts"><div class="hero"><div class="obs-kicker">Evidence before hindsight</div><h1>The Receipts Vault</h1><p class="muted">A register of claims, original sources and outcomes. Unverified entries are not counted as successful predictions.</p></div><div class="card obs-block"><div class="obs-fields"><label>Search<input id="obs-search" class="obs-field" placeholder="Title, target, evidence"></label><label>Status<select id="obs-filter" class="obs-field"><option value="">All</option><option>Unverified</option><option>Pending</option><option>Reached</option><option>Missed</option></select></label><button id="obs-export" class="obs-btn">Export JSON</button><label>Import evidence JSON<input class="obs-field" type="file" id="obs-import" accept=".json"></label></div><div class="obs-table-wrap"><table class="obs-table"><thead><tr><th>Claim / article</th><th>Published</th><th>Target</th><th>Source</th><th>Status / outcome</th></tr></thead><tbody id="obs-receipt-rows"></tbody></table></div><p id="obs-receipt-status" class="obs-note"></p></div><div class="card"><h3>Add evidence record</h3><form id="obs-receipt-form"><div class="obs-fields"><label>Title<input name="title" class="obs-field" required></label><label>Publication date<input type="date" name="date" class="obs-field" required></label><label>Target / claim<input name="target" class="obs-field" required></label><label>Original URL<input type="url" name="url" class="obs-field" required></label><label>Outcome<select name="status" class="obs-field"><option>Unverified</option><option>Pending</option><option>Reached</option><option>Missed</option></select></label><label>Outcome evidence / notes<input name="note" class="obs-field"></label><button class="obs-btn">Add record</button></div></form><p class="obs-note">Local records are user-entered, not independently verified or tamper-proof. Export to preserve your evidence outside this browser.</p></div></section><section class="page" id="lifetime"><div class="hero"><div class="obs-kicker">1,428 days · 12 × 119</div><h1>Lifetime Clock & Zodiac</h1><p class="muted">The twelve equal-duration signs are a conceptual overlay; the 1,064/364 split is a separate calendar model.</p></div><div class="grid two"><div class="card"><div class="obs-clockwheel"><div class="obs-hand" id="obs-hand"></div><div class="obs-clockcenter" id="obs-clockcenter">—</div></div><div class="obs-fields"><label>Anchor UTC<input id="obs-anchor" class="obs-field" type="date" value="2022-11-07"></label><label>As-of date (optional)<input id="obs-asof" type="date" class="obs-field"></label></div></div><div class="card"><h3>Cycle readout</h3><div id="obs-clock-read" class="readout"></div><div id="obs-signs" class="signGrid"></div></div></div></section><section class="page" id="elevator"><div class="hero"><div class="obs-kicker">Price ladder · scenario navigator</div><h1>BTC Elevator™</h1><p class="muted">Choose a level from the supplied research brief. These are reference levels, not trading orders.</p></div><div class="grid two"><div class="card"><div class="obs-elevator"><div class="obs-kicker">Selected floor</div><div class="obs-floor" id="obs-floor">$63,000</div><div id="obs-floor-note" class="obs-note"></div><div class="obs-floors" id="obs-floors"></div></div></div><div class="card"><h3>Distance to selected floor</h3><label>Reference BTC price <input id="obs-ref-price" type="number" min="1" step="1" class="obs-field" placeholder="Enter price"></label><button id="obs-live-price" class="obs-btn">Fetch BTC/USD</button><div id="obs-distance" class="obs-metric">—</div><p id="obs-price-status" class="obs-note">No quote loaded.</p><canvas id="obs-ladder" class="obs-chart" aria-label="Price floor ladder"></canvas></div></div></section><section class="page" id="lab"><div class="hero"><div class="obs-kicker">Frozen claim versus editable scenario</div><h1>Prophecy Lab</h1><p class="muted">Keep the stated September 2029 target separate from any new calculation.</p></div><div class="grid two"><div class="card"><span class="obs-tag">Reference claim · not independently authenticated</span><h3>September 2029 · $170,000–$175,000</h3><p>Centre date: 3 September 2029 (as described in supplied brief).</p><p>Publication date and original article URL have not been supplied. This reference is fixed in the interface.</p></div><div class="card"><h3>Editable scenario</h3><div class="obs-fields"><label>Start price<input id="obs-lab-start" type="number" min="1" value="37711" class="obs-field"></label><label>End price<input id="obs-lab-end" type="number" min="1" value="172500" class="obs-field"></label><label>Days<input id="obs-lab-days" type="number" min="1" max="10000" value="1064" class="obs-field"></label></div><div id="obs-lab-result" class="obs-metric"></div><p class="obs-note">Log-linear hypothetical scenario. Not the historical replay or hyperbola from the terminal.</p></div></div><div class="card obs-block"><canvas id="obs-lab-chart" class="obs-chart" aria-label="Hypothetical growth path compared with reference target"></canvas></div></section><section class="page" id="workshop"><div class="hero"><div class="obs-kicker">Engineering concepts · untested</div><h1>Invention Workshop</h1><p class="muted">Concept research only; no claim of safety, certification or demonstrated performance.</p></div><div class="grid two"><div class="card"><h3>Hydro House</h3><p>Proposed fire-response concept.</p><details><summary>Research questions</summary><p>Water availability, power loss, smoke ingress, structural loads, drainage, independent fire engineering review.</p></details><p class="obs-note">Drawings, material specifications and test evidence pending.</p></div><div class="card"><h3>From Zorb to Survival Capsule</h3><p>Proposed protective capsule concept.</p><details><summary>Research questions</summary><p>Impact loads, buoyancy, ventilation, entrapment, evacuation and independent engineering assessment.</p></details><p class="obs-note">No validated design or survival rating supplied.</p></div></div></section><section class="page" id="philosophy"><div class="hero"><div class="obs-kicker">The thinking room</div><h1>Philosophy & AI Observatory</h1><p class="muted">Identity, classification and the changing relationship between humans and technology.</p></div><div class="grid two"><div class="card"><h3>NULL AND THE PIGEONHOLE</h3><p>Choose labels to explore how incomplete a description can be.</p><div id="obs-labels"><label style="display:block;padding:6px"><input type="checkbox" value="Occupation"> Occupation</label><label style="display:block;padding:6px"><input type="checkbox" value="Age group"> Age group</label><label style="display:block;padding:6px"><input type="checkbox" value="Nationality"> Nationality</label><label style="display:block;padding:6px"><input type="checkbox" value="Interests"> Interests</label><label style="display:block;padding:6px"><input type="checkbox" value="Education"> Education</label><label style="display:block;padding:6px"><input type="checkbox" value="Online activity"> Online activity</label></div><div id="obs-label-result" class="readout">No labels selected.</div></div><div class="card"><h3>Automation & digital society</h3><p>Didn’t We Say They Weren’t Coming for Our Jobs?</p><p>The Great Instagram Ambush</p><p class="obs-note">Article originals and links awaiting source material.</p></div></div></section><section class="page" id="editorial"><div class="hero"><div class="obs-kicker">Editorial desk · satire</div><h1>CHECK, PLEASE 🍽 & Monday Roast</h1><p class="muted">Browse the supplied titles. Original articles are not reproduced or invented.</p></div><div class="obs-fields obs-block"><label>Filter editions<input id="obs-ed-search" class="obs-field" placeholder="Search editorial titles"></label></div><div id="obs-editions" class="grid two"></div></section><section class="page" id="warnings"><div class="hero"><div class="obs-kicker">Cross-market research</div><h1>Early Warning Archive</h1><p class="muted">A separate record of risk warnings, distinct from exact price predictions.</p></div><div class="grid two"><div class="card"><h3>The AI Bubble May Have Just Flashed Its First Real Red Flag</h3><p>Original publication date, evidence and follow-up are awaiting source material.</p><button type="button" class="pageLinkMini" data-obs-page="receipts">Evidence register</button></div><div class="card"><h3>Moon Boys Have Copium</h3><p>Original publication date, evidence and follow-up are awaiting source material.</p><button type="button" class="pageLinkMini" data-obs-page="receipts">Evidence register</button></div><div class="card"><h3>Final Mic Drop</h3><p>Original publication date, evidence and follow-up are awaiting source material.</p><button type="button" class="pageLinkMini" data-obs-page="receipts">Evidence register</button></div></div></section>
-<section class="page" id="weather"><div class="hero"><div class="eyebrow">Weather page · first read</div><h1>Storm Watch</h1><span class="bigverdict">Current Bias: DOWN — after peak, falling side</span><p class="muted">The arc has been corrected: the marker is no longer climbing toward another peak. It is placed after the peak on the contraction side, showing exhaustion already happened and the conceptual path is falling unless invalidated.</p></div><div class="desktopSplit"><div class="glowbox"><h3>BTC Harmonic Arc Location</h3><div class="arcWrap"><div class="peakLabel">PEAK / EXHAUSTION PASSED</div><svg class="arc arcSvg" viewBox="0 0 520 260"><path class="seg1" d="M30 230 C95 80,170 25,260 24"/><path class="seg2" d="M260 24 C300 24,335 50,360 88"/><path class="seg3" d="M360 88 C405 150,455 195,495 230"/></svg><div class="fallMarker"></div><div class="downArrow">↘</div><div class="noPeak">Interpretation: no second peak implied. Marker is already beyond top-side exhaustion.</div></div></div><div class="grid"><div class="card"><h3>Weather Verdict</h3><div class="metric bad">Defensive</div><p>Late-cycle fractal condition, harmonic peak pressure and weak confirmation mean the default weather is caution, hedge, reduce leverage, and wait for evidence.</p></div><div class="card"><h3>Invalidation</h3><p>Only changes if structure recovers: decisive divergence flip, contraction behaviour breaks, deviation calms, and the compass shifts from defensive to offensive.</p></div></div></div><div class="grid three"><div class="card"><h3>Live BTC Price</h3><div class="livePriceGrid"><div class="priceBox"><b>BTC / USD</b><span id="btcUsd">Loading…</span><small id="btcUsdChange" class="muted">24h: loading</small></div><div class="priceBox"><b>BTC / GBP</b><span id="btcGbp">Loading…</span><small id="btcGbpChange" class="muted">24h: loading</small></div></div><button class="refreshMini" id="refreshBtcPrice">Refresh BTC price</button><div class="priceStatus" id="btcPriceStatus">Pulling live BTC pricing from CoinGecko. Price is displayed in both USD and GBP.</div><p class="muted">Outcome, not cause — but the live price keeps the weather board grounded.</p></div><div class="card"><h3>Phase</h3><div class="metric warn">Post-Peak</div><p class="muted">Distribution → exhaustion → contraction.</p></div><div class="card"><h3>Direction</h3><div class="metric bad">Down</div><p class="muted">Conceptual pressure until proven otherwise.</p></div></div></section>
-<section class="page" id="engine"><div class="hero"><div class="eyebrow">What the engine is for</div><h1>Indicator Engine</h1><p class="muted">This engine converts the Almanac writings into a visual decision system. It is not a crystal ball. It tells the user what environment BTC appears to be standing in: expansion, distribution, contraction, compression, or regime stress.</p><div class="engineSnapshot"><div class="engineTile"><b>Climate</b><div class="readout bad">Contraction</div><small>Baseline bias is defensive until the structure proves otherwise.</small></div><div class="engineTile"><b>Wheel</b><div class="readout warn">Sign 9</div><small>Exhaustion / falling side after peak pressure.</small></div><div class="engineTile"><b>Deviation</b><div class="readout warn">7.4 / 12</div><small>Structural stress is above normal and requires caution.</small></div><div class="engineTile"><b>Compass</b><div class="readout bad">Defensive</div><small>Six-point weekly check favours risk reduction.</small></div><div class="engineTile"><b>Alt Vector</b><div class="readout blue">Selectable</div><small>Choose an altcoin and run a functional risk/reward calculation.</small></div></div></div><div class="grid two"><div class="card"><h3>How to use it</h3><div class="stepList"><div class="step"><b>1. Start with Climate.</b><br>Expansion or contraction decides the baseline bias. <button class="pageLinkMini" data-jump="weather">Open Weather</button></div><div class="step"><b>2. Check the Wheel.</b><br>The 12 signs show where the cycle says we are. <button class="pageLinkMini" data-jump="wheel">Open Wheel</button></div><div class="step"><b>3. Read Deviation.</b><br>If behaviour disagrees with the phase, the map is losing authority. <button class="pageLinkMini" data-jump="deviation">Open Deviation</button></div><div class="step"><b>4. Run the Compass.</b><br>Six weekly dials decide offensive, neutral or defensive posture. <button class="pageLinkMini" data-jump="compass">Open Compass</button></div><div class="step"><b>5. Vector alts last.</b><br>Only judge altcoins after BTC climate and cycle position are known. <button class="pageLinkMini" data-jump="altvector">Open Alt Vector</button></div></div><div class="engineGuide"><b>Rule:</b> this page is the command centre. Any step that references another page has a live summary here and a quick jump button. Nothing important is hidden behind an essay.</div></div><div class="card"><h3>Engine Visual Flow</h3><div class="canvasBox"><canvas id="engineChart"></canvas></div><p class="muted">More red/yellow means defensive posture. More green means trend-following can be considered.</p><div class="flowMap"><div class="flowNode"><span>Climate</span><span class="bad">Contraction</span></div><div class="flowArrow">↓</div><div class="flowNode"><span>Wheel</span><span class="warn">Sign 9 · Exhaustion</span></div><div class="flowArrow">↓</div><div class="flowNode"><span>Deviation</span><span class="warn">Stress rising</span></div><div class="flowArrow">↓</div><div class="flowNode"><span>Compass</span><span class="bad">Defensive</span></div><div class="flowArrow">↓</div><div class="flowNode"><span>Verdict</span><span class="bad">Down bias until invalidated</span></div></div></div></div></section>
+<section class="page" id="weather"><div class="card" style="margin-bottom:12px"><h3>Shared live plumbing observation</h3><p id="pl-shared-weather" role="status">Unavailable</p><small>Separate from legacy narrative and Referee scores; those are not recalculated by this feed.</small></div><div class="hero"><div class="eyebrow">Weather page · first read</div><h1>Storm Watch</h1><span class="bigverdict">Current Bias: DOWN — after peak, falling side</span><p class="muted">The arc has been corrected: the marker is no longer climbing toward another peak. It is placed after the peak on the contraction side, showing exhaustion already happened and the conceptual path is falling unless invalidated.</p></div><div class="desktopSplit"><div class="glowbox"><h3>BTC Harmonic Arc Location</h3><div class="arcWrap"><div class="peakLabel">PEAK / EXHAUSTION PASSED</div><svg class="arc arcSvg" viewBox="0 0 520 260"><path class="seg1" d="M30 230 C95 80,170 25,260 24"/><path class="seg2" d="M260 24 C300 24,335 50,360 88"/><path class="seg3" d="M360 88 C405 150,455 195,495 230"/></svg><div class="fallMarker"></div><div class="downArrow">↘</div><div class="noPeak">Interpretation: no second peak implied. Marker is already beyond top-side exhaustion.</div></div></div><div class="grid"><div class="card"><h3>Weather Verdict</h3><div class="metric bad">Defensive</div><p>Late-cycle fractal condition, harmonic peak pressure and weak confirmation mean the default weather is caution, hedge, reduce leverage, and wait for evidence.</p></div><div class="card"><h3>Invalidation</h3><p>Only changes if structure recovers: decisive divergence flip, contraction behaviour breaks, deviation calms, and the compass shifts from defensive to offensive.</p></div></div></div><div class="grid three"><div class="card"><h3>Live BTC Price</h3><div class="livePriceGrid"><div class="priceBox"><b>BTC / USD</b><span id="btcUsd">Loading…</span><small id="btcUsdChange" class="muted">24h: loading</small></div><div class="priceBox"><b>BTC / GBP</b><span id="btcGbp">Loading…</span><small id="btcGbpChange" class="muted">24h: loading</small></div></div><button class="refreshMini" id="refreshBtcPrice">Refresh BTC price</button><div class="priceStatus" id="btcPriceStatus">Pulling live BTC pricing from CoinGecko. Price is displayed in both USD and GBP.</div><p class="muted">Outcome, not cause — but the live price keeps the weather board grounded.</p></div><div class="card"><h3>Phase</h3><div class="metric warn">Post-Peak</div><p class="muted">Distribution → exhaustion → contraction.</p></div><div class="card"><h3>Direction</h3><div class="metric bad">Down</div><p class="muted">Conceptual pressure until proven otherwise.</p></div></div></section>
+<section class="page" id="engine"><div class="card" style="margin-bottom:12px"><h3>Shared live plumbing observation</h3><p id="pl-shared-engine" role="status">Unavailable</p><small>Separate from legacy narrative and Referee scores; those are not recalculated by this feed.</small></div><div class="hero"><div class="eyebrow">What the engine is for</div><h1>Indicator Engine</h1><p class="muted">This engine converts the Almanac writings into a visual decision system. It is not a crystal ball. It tells the user what environment BTC appears to be standing in: expansion, distribution, contraction, compression, or regime stress.</p><div class="engineSnapshot"><div class="engineTile"><b>Climate</b><div class="readout bad">Contraction</div><small>Baseline bias is defensive until the structure proves otherwise.</small></div><div class="engineTile"><b>Wheel</b><div class="readout warn">Sign 9</div><small>Exhaustion / falling side after peak pressure.</small></div><div class="engineTile"><b>Deviation</b><div class="readout warn">7.4 / 12</div><small>Structural stress is above normal and requires caution.</small></div><div class="engineTile"><b>Compass</b><div class="readout bad">Defensive</div><small>Six-point weekly check favours risk reduction.</small></div><div class="engineTile"><b>Alt Vector</b><div class="readout blue">Selectable</div><small>Choose an altcoin and run a functional risk/reward calculation.</small></div></div></div><div class="grid two"><div class="card"><h3>How to use it</h3><div class="stepList"><div class="step"><b>1. Start with Climate.</b><br>Expansion or contraction decides the baseline bias. <button class="pageLinkMini" data-jump="weather">Open Weather</button></div><div class="step"><b>2. Check the Wheel.</b><br>The 12 signs show where the cycle says we are. <button class="pageLinkMini" data-jump="wheel">Open Wheel</button></div><div class="step"><b>3. Read Deviation.</b><br>If behaviour disagrees with the phase, the map is losing authority. <button class="pageLinkMini" data-jump="deviation">Open Deviation</button></div><div class="step"><b>4. Run the Compass.</b><br>Six weekly dials decide offensive, neutral or defensive posture. <button class="pageLinkMini" data-jump="compass">Open Compass</button></div><div class="step"><b>5. Vector alts last.</b><br>Only judge altcoins after BTC climate and cycle position are known. <button class="pageLinkMini" data-jump="altvector">Open Alt Vector</button></div></div><div class="engineGuide"><b>Rule:</b> this page is the command centre. Any step that references another page has a live summary here and a quick jump button. Nothing important is hidden behind an essay.</div></div><div class="card"><h3>Engine Visual Flow</h3><div class="canvasBox"><canvas id="engineChart"></canvas></div><p class="muted">More red/yellow means defensive posture. More green means trend-following can be considered.</p><div class="flowMap"><div class="flowNode"><span>Climate</span><span class="bad">Contraction</span></div><div class="flowArrow">↓</div><div class="flowNode"><span>Wheel</span><span class="warn">Sign 9 · Exhaustion</span></div><div class="flowArrow">↓</div><div class="flowNode"><span>Deviation</span><span class="warn">Stress rising</span></div><div class="flowArrow">↓</div><div class="flowNode"><span>Compass</span><span class="bad">Defensive</span></div><div class="flowArrow">↓</div><div class="flowNode"><span>Verdict</span><span class="bad">Down bias until invalidated</span></div></div></div></div></section>
 <section class="page" id="wheel"><div class="hero"><div class="eyebrow">1428-day torus · animated locator</div><h1>Wheel Indicator</h1><p class="muted">The wheel shows conceptual motion through the 12 liquidity signs. The current marker is placed in the late/falling region. When BTC behaviour matches a different sign, the active sign should move visually.</p></div><div class="desktopSplit"><div class="glowbox"><h3>Where are we on the wheel?</h3><div class="wheel"><div class="wheelNeedle"></div><div class="centerText">CURRENT<br><span class="bad">SIGN 9</span><br>FALLING</div></div><p class="muted">Conceptual direction: clockwise through exhaustion into capitulation/compression. This is the opposite of “another peak forming”.</p></div><div class="card"><h3>12 Signs — active state</h3><div class="signGrid" id="signGrid"></div></div></div></section>
 <section class="page" id="deviation"><div class="hero"><div class="eyebrow">Stress detection</div><h1>Deviation Index</h1><p class="muted">The Deviation Index tells users whether BTC is still behaving like its expected phase. It is not emotion. It is pressure displacement.</p></div><div class="grid two"><div class="card"><h3>How to follow it</h3><p>Low deviation means the map is behaving. Medium means anomalies are appearing. High means the model must be challenged because regime transition probability is rising.</p><div class="stepList"><div class="step"><b>0–2:</b> Normal phase behaviour.</div><div class="step"><b>3–5:</b> Early anomaly.</div><div class="step"><b>6–8:</b> Structural instability.</div><div class="step"><b>9+:</b> Regime shift probability elevated.</div></div></div><div class="card"><h3>Deviation Stress Gauge</h3><div class="canvasBox"><canvas id="deviationChart"></canvas></div><p class="muted">Max stress is information, not panic.</p></div></div><div class="grid four"></div><div class="grid three"><div class="card"><h3>Return Divergence</h3><div class="dial"><div class="fill" style="width:68%"></div></div><p>Current return vs historical sign fingerprint.</p></div><div class="card"><h3>Volatility Dislocation</h3><div class="dial"><div class="fill" style="width:72%"></div></div><p>Volatility outside normal bounds.</p></div><div class="card"><h3>Climate Conflict</h3><div class="dial"><div class="fill" style="width:80%"></div></div><p>Structure contradicts the climate.</p></div></div></section>
-<section class="page" id="compass"><div class="hero"><div class="eyebrow">Compass · six-point weekly check</div><h1>Compass</h1><p class="muted">The compass makes the weekly decision simple: sail, reduce canvas, or stay defensive. It turns six dials into one posture.</p></div><div class="desktopSplit"><div class="glowbox"><h3>Actual Compass</h3><div class="compass"><div class="nsew"><span class="n good">OFFENSE</span><span class="e warn">CAUTION</span><span class="s bad">DEFENSE</span><span class="w blue">NEUTRAL</span></div><div class="needle"></div></div><p class="muted">Needle currently leans defensive because late sign + rising deviation + weak confirmation outweighs hope.</p></div><div class="card"><h3>Six Weekly Dials</h3><div class="canvasBox"><canvas id="compassChart"></canvas></div></div></div><div class="grid three"><div class="card"><h3>Protocol</h3><p><span class="good">4+ greens</span> = offensive. <span class="warn">Mixed yellows</span> = neutral, tight stops. <span class="bad">3+ reds</span> = defensive.</p></div><div class="card"><h3>Why visual?</h3><p>The user should understand posture instantly without reading a full essay: green sail, yellow caution, red brake.</p></div><div class="card"><h3>Reading</h3><p>Compass is not a forecast. It is a positioning referee.</p></div></div></section>
+<section class="page" id="compass"><div class="card" style="margin-bottom:12px"><h3>Shared live plumbing observation</h3><p id="pl-shared-compass" role="status">Unavailable</p><small>Separate from legacy narrative and Referee scores; those are not recalculated by this feed.</small></div><div class="hero"><div class="eyebrow">Compass · six-point weekly check</div><h1>Compass</h1><p class="muted">The compass makes the weekly decision simple: sail, reduce canvas, or stay defensive. It turns six dials into one posture.</p></div><div class="desktopSplit"><div class="glowbox"><h3>Actual Compass</h3><div class="compass"><div class="nsew"><span class="n good">OFFENSE</span><span class="e warn">CAUTION</span><span class="s bad">DEFENSE</span><span class="w blue">NEUTRAL</span></div><div class="needle"></div></div><p class="muted">Needle currently leans defensive because late sign + rising deviation + weak confirmation outweighs hope.</p></div><div class="card"><h3>Six Weekly Dials</h3><div class="canvasBox"><canvas id="compassChart"></canvas></div></div></div><div class="grid three"><div class="card"><h3>Protocol</h3><p><span class="good">4+ greens</span> = offensive. <span class="warn">Mixed yellows</span> = neutral, tight stops. <span class="bad">3+ reds</span> = defensive.</p></div><div class="card"><h3>Why visual?</h3><p>The user should understand posture instantly without reading a full essay: green sail, yellow caution, red brake.</p></div><div class="card"><h3>Reading</h3><p>Compass is not a forecast. It is a positioning referee.</p></div></div></section>
 <section class="page" id="prophecy"><div class="hero"><div class="eyebrow">8 October 2026 window</div><h1>Prophecy Window</h1><p class="muted">Calendar is pencilled, not inked. Colour and structure call the shot.</p></div><div class="grid two"><div class="card"><h3>Forecast Ladder</h3><div class="canvasBox"><canvas id="ladderChart"></canvas></div></div><div class="card"><h3>Current Read</h3><p>Contraction window remains active until the tools say otherwise. First serious destination remains 50k–48k, then 37.8k–33.1k, with extreme washout near 29.7k.</p></div></div></section>
 
 <section class="page" id="zero"><div class="hero"><div class="eyebrow">Zero-Day mechanics · money-flow operations centre</div><h1>The Machine Beneath the Story</h1><p class="muted">Recursive liquidity is the operating model: expansion → saturation → distribution → contraction → compression → re-expansion. This page turns that idea into a visual machine so users can see where pressure is building, where capital is rotating, and when the normal market plumbing is starting to matter more than crypto-only narratives.</p></div>
@@ -1039,7 +1191,7 @@ $(&#x27;settings&#x27;).onclick=()=&gt;{$(&#x27;config&#x27;).hidden=!$(&#x27;co
   </div>
 </section>
 
-<section class="page" id="reports"><div class="hero"><div class="eyebrow">Copy-ready summary</div><h1>Daily Report</h1><p class="muted">This section will become the one-click Almanac report generator.</p></div><div class="card"><h3>Current Report</h3><p><b>BTC Weather:</b> Storm Watch. <b>Arc:</b> after peak, falling side. <b>Wheel:</b> Sign 9 exhaustion heading toward capitulation/compression. <b>Compass:</b> defensive until invalidated.</p></div></section>
+<section class="page" id="reports"><div class="card" style="margin-bottom:12px"><h3>Shared live plumbing observation</h3><p id="pl-shared-reports" role="status">Unavailable</p><small>Separate from legacy narrative and Referee scores; those are not recalculated by this feed.</small></div><div class="hero"><div class="eyebrow">Copy-ready summary</div><h1>Daily Report</h1><p class="muted">This section will become the one-click Almanac report generator.</p></div><div class="card"><h3>Current Report</h3><p><b>BTC Weather:</b> Storm Watch. <b>Arc:</b> after peak, falling side. <b>Wheel:</b> Sign 9 exhaustion heading toward capitulation/compression. <b>Compass:</b> defensive until invalidated.</p></div></section>
 <footer class="footer"><div class="eyebrow">THE BTC ALMANAC</div><h3>A Weather System for the Digital Age</h3><p class="muted">Static site. Visual indicator. Liquidity-first decision system.</p><div class="socials"><a class="social" href="#">Substack</a><a class="social" href="#">X / Twitter</a><a class="social" href="#">YouTube</a><a class="social" href="#">GitHub</a></div></footer>
 </main>
 <script>
@@ -1869,4 +2021,61 @@ let editions=["Idiot's Guide to Fixing This Shit","Fed Dinner Bill","Who Would Y
 function editorial(){let q=$('obs-ed-search').value.toLowerCase();$('obs-editions').replaceChildren(...editions.filter(t=>t.toLowerCase().includes(q)).map(t=>{let d=document.createElement('div');d.className='card obs-article';let h=document.createElement('h3');h.textContent=t;let p=document.createElement('p');p.textContent='Claim / Evidence / Bill Please — original article required before editorial summary or citations can be populated.';d.append(h,p);return d}))}
 $('obs-ed-search').oninput=editorial;editorial();elevator();lab();new ResizeObserver(()=>{elevator();lab()}).observe($('obs-ladder'));new ResizeObserver(lab).observe($('obs-lab-chart'));
 })();
-</script><div style="text-align:center;font:11px system-ui;color:#a6bbc8;padding:8px">Observatory V2 · S01-R2</div></body></html>
+</script><div style="text-align:center;font:11px system-ui;color:#a6bbc8;padding:8px">Observatory V2 · Plumbing P1</div><script>
+(()=>{"use strict";
+const $=id=>document.getElementById(id), now=()=>Date.now(), W=300000, base="https://fapi.binance.com", fields=[
+["pressure","Spot buy pressure","Kraken BTC/USD · rolling 5 min · executed USD notional"],
+["cvd","Spot CVD","Kraken BTC/USD · rolling 5 min · USD"],
+["book","Order-book imbalance","Kraken BTC/USD · top 10 levels per side · BTC quantity"],
+["oi","Open interest","Binance USD-M BTCUSDT · BTC"],
+["change","Open interest change","Binance BTCUSDT · previous accepted session snapshot"],
+["funding","Latest reported funding","Binance BTCUSDT · percentage per funding event"]];
+let socket=null,running=false,busy=false,generation=0,started=0,lastTrade=0,tradeNote="Not connected",trades=[],seen=new Map(),readings={},lastOI=null,history=[],lastPlot=0,lastMessage=0,retryAt=0;
+const fmt=(n,d=2)=>n.toLocaleString("en-US",{maximumFractionDigits:d});
+const stamp=t=>new Date(t).toISOString();
+function number(v){if(typeof v!=="number"&&typeof v!=="string"||String(v).trim()==="")throw Error("Missing number");let n=Number(v);if(!Number.isFinite(n))throw Error("Invalid number");return n}
+function fresh(t,max=180000){return Number.isFinite(t)&&t<=now()+30000&&now()-t<=max}
+function store(k,value,time,detail){readings[k]={value,time,detail,error:null}}
+function fail(k,e){readings[k]={value:null,time:null,detail:"",error:String(e.message||e)}}
+function flow(rows){let buy=0,sell=0;for(const r of rows){if(r.side==="buy")buy+=r.usd;else sell+=r.usd}return {buy,sell,pressure:buy+sell?100*buy/(buy+sell):null,cvd:buy-sell}}
+function imbalance(b,a){if(b<0||a<0||b+a<=0)throw Error("Invalid depth");return (b-a)/(b+a)}
+function delta(a,b){return b>0?100*(a/b-1):null}
+async function get(url){let c=new AbortController(),t=setTimeout(()=>c.abort(),10000);try{let r=await fetch(url,{signal:c.signal,cache:"no-store"});if(!r.ok)throw Error("HTTP "+r.status);return await r.json()}finally{clearTimeout(t)}}
+async function refresh(){if(busy)return;busy=true;$("pl-refresh").disabled=true;const g=generation;
+const tasks=[
+["oi",base+"/fapi/v1/openInterest?symbol=BTCUSDT",j=>{if(j.symbol!=="BTCUSDT")throw Error("Wrong market");let v=number(j.openInterest),t=number(j.time);if(v<0||!fresh(t))throw Error("Invalid or stale OI");store("oi",v,t,"Exchange timestamp");if(lastOI&&t>lastOI.t&&lastOI.v>0)store("change",delta(v,lastOI.v),t,"Compared with "+stamp(lastOI.t));else if(!lastOI||t<lastOI.t)fail("change","Awaiting a second valid snapshot");if(!lastOI||t>lastOI.t)lastOI={v,t}}],
+["funding",base+"/fapi/v1/premiumIndex?symbol=BTCUSDT",j=>{if(j.symbol!=="BTCUSDT")throw Error("Wrong market");let t=number(j.time),v=number(j.lastFundingRate);if(!fresh(t))throw Error("Stale funding response");store("funding",v*100,t,"Exchange response timestamp; not settlement time")}],
+["book","https://api.kraken.com/0/public/Depth?pair=XBTUSD&count=10",j=>{if(!Array.isArray(j.error)||j.error.length)throw Error("Kraken response error");let z=Object.values(j.result||{});if(z.length!==1)throw Error("Missing book");let q=z[0];function side(a){if(!Array.isArray(a)||!a.length||a.length>10)throw Error("Invalid depth");let total=0;for(let r of a){let price=number(r[0]),qty=number(r[1]);if(price<=0||qty<=0)throw Error("Invalid level");total+=qty}return total}let b=side(q.bids),a=side(q.asks);if(number(q.bids[0][0])>=number(q.asks[0][0]))throw Error("Crossed book");store("book",imbalance(b,a)*100,now(),"Received locally; exchange snapshot timestamp unavailable · bids "+fmt(b,4)+" BTC / asks "+fmt(a,4)+" BTC")}]];
+await Promise.all(tasks.map(async ([k,url,parse])=>{try{let j=await get(url);if(g===generation)parse(j)}catch(e){if(g===generation){fail(k,e);if(k==="oi"){fail("change",e);lastOI=null}}}}));busy=false;$("pl-refresh").disabled=false;render()}
+function resetTrades(){started=0;lastTrade=0;lastMessage=0;trades=[];seen.clear();history=[];lastPlot=0}
+function connect(){if(!running||socket)return;resetTrades();tradeNote="Connecting Kraken";let ws;try{ws=new WebSocket("wss://ws.kraken.com/v2")}catch(e){tradeNote=String(e);retryAt=now()+15000;return}socket=ws;lastMessage=now();
+ws.onopen=()=>{if(socket!==ws)return;tradeNote="Awaiting subscription";ws.send(JSON.stringify({method:"subscribe",params:{channel:"trade",symbol:["BTC/USD"],snapshot:false}}))};
+ws.onmessage=e=>{if(socket!==ws)return;lastMessage=now();let j;try{j=JSON.parse(e.data)}catch{return}if(j.method==="subscribe"){if(j.success&&j.result?.channel==="trade"&&j.result?.symbol==="BTC/USD"){started=now();tradeNote="Subscribed"}else{tradeNote="Subscription failed";ws.close()}return}if(j.channel!=="trade"||j.type!=="update"||!started||!Array.isArray(j.data))return;
+for(let r of j.data){try{if(r.symbol!=="BTC/USD"||!["buy","sell"].includes(r.side)||r.trade_id==null)continue;let t=Date.parse(r.timestamp),price=number(r.price),qty=number(r.qty),id=String(r.trade_id);if(!fresh(t,W)||t<started-30000||price<=0||qty<=0||!Number.isFinite(price*qty)||seen.has(id))continue;seen.set(id,t);trades.push({t,side:r.side,usd:price*qty});lastTrade=Math.max(lastTrade,t)}catch{}}
+};
+ws.onerror=()=>{if(socket===ws){tradeNote="WebSocket error";ws.close()}};
+ws.onclose=()=>{if(socket!==ws)return;socket=null;resetTrades();tradeNote=running?"Disconnected; retry scheduled":"Stopped";retryAt=now()+15000};
+}
+function snapshot(){let t=now();trades=trades.filter(r=>r.t>=t-W);for(let [id,ts] of seen)if(ts<t-W)seen.delete(id);let active=running&&socket?.readyState===1&&started&&t-lastMessage<45000&&fresh(lastTrade,60000);let f=flow(trades);let spot=active&&trades.length?{pressure:f.pressure,cvd:f.cvd,count:trades.length,coverageSeconds:Math.min(300,Math.max(0,(t-started)/1000)),lastTrade,buyUSD:f.buy,sellUSD:f.sell}:null;let metrics={};for(let k of ["book","oi","change","funding"]){let r=readings[k];metrics[k]=r&&r.value!==null&&fresh(r.time)?{...r,status:"AVAILABLE"}:{value:null,time:r?.time??null,detail:r?.detail||"",error:r?.error||(r?"Stale or no comparison":"No reading"),status:"UNAVAILABLE"}}return {schema:"plumbing-v1",checkedAt:t,sources:{spot:"Kraken BTC/USD spot WebSocket trade",book:"Kraken XBTUSD REST Depth top 10 per side",futures:"Binance USD-M BTCUSDT perpetual"},spot,metrics,tradeNote,monitoring:running}}
+function render(){let x=snapshot(),spot=x.spot;for(let [k] of fields){let r=x.metrics[k],v=k==="pressure"?spot?.pressure:k==="cvd"?spot?.cvd:r?.value;$( "pl-val-"+k).textContent=v==null?"Unavailable":k==="cvd"?"$"+fmt(v):fmt(v,k==="funding"?5:2)+(k==="oi"?" BTC":"%");$("pl-meta-"+k).textContent=r?(r.status==="AVAILABLE"?stamp(r.time)+" · "+r.detail:r.error):spot?spot.count+" trades · "+stamp(spot.lastTrade):tradeNote}
+$("pl-health").textContent="Spot: "+tradeNote+" · Snapshots: "+(busy?"requesting":Object.values(x.metrics).filter(r=>r.status==="AVAILABLE").length+"/4 available")+" · "+stamp(x.checkedAt);
+$("pl-coverage").textContent=spot?`${spot.count} trades · ${Math.floor(spot.coverageSeconds)}/300 seconds since subscription · partial until full window; no gap backfill`:"No valid trade samples; no zero inferred.";
+if(spot&&now()-lastPlot>=1000){history.push([now(),spot.cvd]);lastPlot=now()}history=history.filter(r=>r[0]>=now()-W);
+let c=$("pl-chart"),w=c.clientWidth,h=c.clientHeight;if(w&&h){c.width=w;c.height=h;let g=c.getContext("2d");g.fillStyle="#071319";g.fillRect(0,0,w,h);g.fillStyle="#a6bbc8";g.font="12px Arial";if(history.length<2||!spot)g.fillText("Waiting for observed trade samples",12,24);else{let max=Math.max(1,...history.map(r=>Math.abs(r[1])));g.strokeStyle="#41545d";g.beginPath();g.moveTo(0,h/2);g.lineTo(w,h/2);g.stroke();g.strokeStyle="#66e7ff";g.lineWidth=2;g.beginPath();history.forEach(([t,v],i)=>{let xx=w*(t-(now()-W))/W,yy=h/2-v/max*(h/2-12);i?g.lineTo(xx,yy):g.moveTo(xx,yy)});g.stroke();g.fillText("± $"+fmt(max,0),12,15)}}
+let summary="Kraken spot buy pressure: "+(spot&&spot.pressure!=null?fmt(spot.pressure)+"%":"Unavailable")+" · Binance OI: "+(x.metrics.oi.value==null?"Unavailable":fmt(x.metrics.oi.value)+" BTC")+" · Funding: "+(x.metrics.funding.value==null?"Unavailable":fmt(x.metrics.funding.value,5)+"%")+" · "+stamp(x.checkedAt);
+for(let id of ["weather","compass","engine","reports"])$("pl-shared-"+id).textContent=summary;
+document.dispatchEvent(new CustomEvent("observatory:plumbing",{detail:x}));
+}
+for(let [k,title,desc] of fields){let d=document.createElement("div");d.className="resultBox";let b=document.createElement("b");b.textContent=title;let v=document.createElement("div");v.className="metric";v.id="pl-val-"+k;let p=document.createElement("small");p.textContent=desc;let m=document.createElement("p");m.id="pl-meta-"+k;m.style.fontSize=".75rem";d.append(b,v,p,m);$("pl-grid").append(d)}
+$("pl-start").onclick=()=>{if(running)return;running=true;$("pl-start").disabled=true;$("pl-stop").disabled=false;connect();nextPoll=now()+60000;refresh();render()};
+$("pl-stop").onclick=()=>{running=false;generation++;if(socket){let ws=socket;socket=null;ws.close()}resetTrades();tradeNote="Stopped";readings={};lastOI=null;$("pl-start").disabled=false;$("pl-stop").disabled=true;render()};
+$("pl-refresh").onclick=refresh;
+$("pl-export").onclick=()=>{let a=document.createElement("a"),u=URL.createObjectURL(new Blob([JSON.stringify(snapshot(),null,2)],{type:"application/json"}));a.href=u;a.download="observatory-plumbing.json";a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)};
+let nextPoll=0;setInterval(()=>{if(running){if(socket&&now()-lastMessage>45000)socket.close();if(!socket&&now()>=retryAt)connect();if(now()>=nextPoll){nextPoll=now()+60000;refresh()}}render()},1000);
+window.ObservatoryPlumbing=Object.freeze({snapshot,math:Object.freeze({flow,imbalance,delta})});render();
+})();
+</script></body></html>
+
+Arora PLC
+
+
