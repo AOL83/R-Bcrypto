@@ -3779,3 +3779,276 @@ function initialiseOptionalChart(canvas,config){
  try{if(typeof window.Chart!=='function'){status('Chart unavailable: Chart.js did not load.');return null;}const chart=new window.Chart(canvas,config);status('');return chart;}catch(e){console.warn('[Observatory] Chart initialisation failed',e);status('Chart failed to initialise.');return null;}
 }
 </script>"""
+# patch parent and embedded terminal independently to avoid modifying escaped HTML incorrectly
+m=re.search(r'(<iframe id="obs-terminal"[^>]*?srcdoc=")([^"]*)(")',s)
+print(bool(m),len(m.group(2)))
+inner=html.unescape(m.group(2))
+inner=inner.replace('localStorage.', 'ObservatoryStorage.').replace('<head>','<head>'+adapter,1)
+out=s[:m.start(2)]+html.escape(inner,quote=True)+s[m.end(2):]
+# parent replacements (escaped terminal already replaced)
+out=out.replace('localStorage.','ObservatoryStorage.').replace('<head>','<head>'+adapter+chart,1)
+out=out.replace('new Chart(', 'initialiseOptionalChart(').replace('charts.forEach(ch=>ch.resize())','charts.forEach(ch=>ch?.resize())')
+# avoid stale destroyed chart instances and nulls
+out=out.replace('if(altRRChart) altRRChart.destroy();','if(altRRChart){const i=charts.indexOf(altRRChart);if(i>=0)charts.splice(i,1);altRRChart.destroy();}').replace('if(altLifeChart) altLifeChart.destroy();','if(altLifeChart){const i=charts.indexOf(altLifeChart);if(i>=0)charts.splice(i,1);altLifeChart.destroy();}')
+print([x[:120] for x in re.findall(r'.{0,50}charts\..{0,70}',out) if 'push' not in x][:20])
+dest=Path('/mnt/data/Observatory-V2-repair-candidate.html');dest.write_text(out)
+# syntax checks
+import subprocess,tempfile
+for i,js in enumerate(re.findall(r'<script\b[^>]*>(.*?)</script>',out,re.S)+re.findall(r'<script\b[^>]*>(.*?)</script>',inner,re.S)):
+ f=Path('/tmp/obs_check.js');f.write_text(js);r=subprocess.run(['node','--check',str(f)],capture_output=True,text=True);print(i,r.returncode,r.stderr[:150])
+
+STDOUT/STDERR
+True 31692
+['function resizeCharts(){charts.forEach(ch=>ch?.resize())}', '  if(altRRChart){const i=charts.indexOf(altRRChart);if(i>=0)charts.splice(i,1);altRRChart.destroy();}', '  if(altLifeChart){const i=charts.indexOf(altLifeChart);if(i>=0)charts.splice(i,1);altLifeChart.destroy(']
+0 0 
+1 0 
+2 0 
+3 0 
+4 0 
+5 0 
+6 0 
+7 0 
+8 0 
+
+
+
+
+
+
+Analyzed
+runner=Path('/mnt/data/observatory_storage_diagnostic.py').read_text()
+runner=runner.replace('Observatory-V1-baseline.html','Observatory-V2-repair-candidate.html').replace('offline dependency-blocked Chromium diagnostic with temporary in-memory storage shim','offline dependency-blocked Chromium diagnostic without external storage shim')
+runner=re.sub(r'    shim=.*\n','',runner)
+runner=runner.replace("path.read_text().replace('<head>','<head>'+shim,1)","path.read_text()")
+runner=runner.replace("run['chartjs']=page.evaluate('typeof Chart')","run['chartjs']=page.evaluate('typeof Chart')\n   run['storage']=page.evaluate('({persistent:ObservatoryStorage.persistent,warning:!!document.getElementById(\"obs-storage-warning\")})')\n   run['chartWarnings']=page.locator('[id^=\"obs-chart-status-\"]').all_text_contents()")
+runner=runner.replace('Observatory-V1-storage-shim-diagnostic.json','Observatory-V2-repair-diagnostic.json')
+rp=Path('/mnt/data/observatory_repair_runner.py');rp.write_text(runner)
+proc=subprocess.Popen(['python',str(rp)],stdout=open('/tmp/obs_repair_stdout','w'),stderr=subprocess.STDOUT)
+print(proc.pid)
+
+STDOUT/STDERR
+2619
+
+
+
+
+
+
+Analyzed
+print(proc.poll())
+print(Path('/tmp/obs_repair_stdout').read_text()[-3000:])
+
+STDOUT/STDERR
+None
+Spreadsheet runtime warmup failed during python startup
+Traceback (most recent call last):
+  File "/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/patches/warm_spreadsheet_runtime_on_startup.py", line 26, in warm_spreadsheet_runtime_on_startup
+  File "/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/spreadsheet_warmup.py", line 785, in warm_spreadsheet_runtime
+  File "/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/spreadsheet_warmup.py", line 718, in _warm_feature_flows
+  File "/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/spreadsheet_warmup.py", line 509, in _warm_drawing_and_image_flows
+  File "/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/generated/interface/models.py", line 32861, in bring_to_front
+  File "/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/rpc/remote.py", line 764, in __call__
+  File "/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/rpc/client.py", line 175, in call
+artifact_tool.rpc.client.RemoteError: Element ordering requires an owning element collection.
+
+
+
+
+
+
+
+Analyzed
+import time
+try: proc.wait(timeout=25)
+except subprocess.TimeoutExpired: pass
+print(proc.poll()); print(Path('/tmp/obs_repair_stdout').read_text()[-1500:])
+q=Path('/mnt/data/Observatory-V2-repair-diagnostic.json')
+if q.exists():
+ j=__import__('json').loads(q.read_text())
+ for r in j['runs']:print(r['width'],r.get('load'),r.get('storage'),r.get('errors'),sum(x['pass'] for x in r['routes']),r.get('chartWarnings'),r.get('terminal'),r.get('fatal'))
+
+STDOUT/STDERR
+None
+Spreadsheet runtime warmup failed during python startup
+Traceback (most recent call last):
+  File "/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/patches/warm_spreadsheet_runtime_on_startup.py", line 26, in warm_spreadsheet_runtime_on_startup
+  File "/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/spreadsheet_warmup.py", line 785, in warm_spreadsheet_runtime
+  File "/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/spreadsheet_warmup.py", line 718, in _warm_feature_flows
+  File "/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/spreadsheet_warmup.py", line 509, in _warm_drawing_and_image_flows
+  File "/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/generated/interface/models.py", line 32861, in bring_to_front
+  File "/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/rpc/remote.py", line 764, in __call__
+  File "/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/rpc/client.py", line 175, in call
+artifact_tool.rpc.client.RemoteError: Element ordering requires an owning element collection.
+
+
+
+
+
+
+
+
+
+Observatory V2 — Sprint 01 Repair Build
+The two proposed repairs have now been installed in an actual HTML release candidate.
+
+Download Observatory V2 — repaired HTML candidate
+
+This is your complete single-file website, not a replacement design or a separate JavaScript module.
+1. Repairs implemented
+Component	Modification
+V2-001	Guarded persistent storage adapter
+V2-002	Optional Chart.js initialisation
+Terminal	Independent protected storage access
+Research records	Visible warning when persistence is unavailable
+Chart lifecycle	Protection against resizing missing charts
+Altcoin charts	Removal of destroyed chart instances from the resize registry
+Original indicator mathematics	Unchanged
+Frozen V1 backup	Untouched
+
+Storage resilience
+The repaired application attempts to use persistent browser storage first. If access is denied, it switches to temporary memory and displays an explicit warning:
+Temporary session memory only: settings and research records will not survive reload. Export records before leaving.
+
+This applies to both the main Observatory and the embedded terminal.
+Chart.js resilience
+I've replaced the seven direct Chart.js constructor call sites with guarded initialisation.
+
+If Chart.js fails to load, the affected chart displays an unavailable message rather than throwing an unhandled dependency error. No fabricated chart library or synthetic chart data has been introduced.
+
+The independent Bitcoin terminal retains its own Canvas rendering engine.
+2. Verification results
+Acceptance test	Result
+Storage adapter installed before initialisation	Passed — source inspection
+Direct application storage calls replaced	Passed — source inspection
+Seven Chart.js call sites protected	Passed — source inspection
+JavaScript syntax validation	Passed — all nine blocks checked
+Storage warning implemented	Passed — source inspection
+Navigation without injected storage adapter	Pending runtime verification
+Chart.js blocked regression	Pending runtime verification
+Terminal controls regression	Pending runtime verification
+Live market connectivity	Unverified
+
+The attempted Chromium regression run encountered an execution-environment startup problem and did not return a completed test report.
+
+Consequently, the repairs are implemented but not yet certified as runtime fixes.
+3. Release status
+♾ WATERFALLSLT OBSERVATORY V22 / 17
+
+
+
+ V1 baseline preserved
+
+ Source inventory completed
+
+ V2-001 repair implemented
+
+ V2-002 repair implemented
+
+ Runtime regression acceptance outstanding
+
+
+4. Engineering deliverables
+- Complete repaired website — single HTML file
+- Updated automated regression runner
+- Untouched V1 rollback baseline
+No new features. No redesign. No mathematical substitutions.
+
+I also repaired the Altcoin chart lifecycle because the existing registry retained destroyed chart instances, which could create further resize failures.
+
+This remains a development candidate rather than a production-certified release. Gate 3 stays open until the repaired application passes the browser fault-reproduction tests.
+
+
+
+
+
+
+Observatory-V2-repair-candidate.htmlHTMLobservatory_repair_runner.pyCodeObservatory-V1-baseline.htmlHTML
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Arora is now a plugin
+Arora is now available as a plugin. You can keep using this GPT until December 11.
+
+
+Use pluginKeep using GPT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Drag to reorder pinned navigation items
