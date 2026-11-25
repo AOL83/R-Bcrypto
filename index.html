@@ -1,3 +1,10 @@
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -763,6 +770,23 @@ function fields(){let el=$(&#x27;fields&#x27;);el.replaceChildren();for(let [gro
 $(&#x27;settings&#x27;).onclick=()=&gt;{$(&#x27;config&#x27;).hidden=!$(&#x27;config&#x27;).hidden};$(&#x27;close&#x27;).onclick=()=&gt;{$(&#x27;config&#x27;).hidden=true};$(&#x27;defaults&#x27;).onclick=()=&gt;{cfg=structuredClone(E.defaults);fields();update(true)};fields();update(true);load();setInterval(()=&gt;{if(!source.startsWith(&#x27;Local CSV&#x27;)&amp;&amp;!source.startsWith(&#x27;CSV&#x27;))load()},300000);
 &lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe><p class="obs-note">Original supplied Almanac JavaScript port. Market candles require a reachable data feed or CSV import; scenarios are not verified forecasts.</p></div>
 <section id="btc-plumbing" class="card" style="margin-top:16px"><div class="eyebrow">BTC market microstructure · independent measurements</div><h2>🔧 THE PLUMBING ROOM</h2><p>Kraken BTC/USD spot and Binance BTCUSDT perpetual are separate markets. Session measurements only; no market-wide totals.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="actionBtn" id="pl-start">Start live monitoring</button><button class="actionBtn secondary" id="pl-stop" disabled>Stop</button><button class="actionBtn secondary" id="pl-refresh">Refresh snapshots</button><button class="actionBtn secondary" id="pl-export">Export readings</button></div><p id="pl-health" role="status">Not connected. Start monitoring or refresh snapshots.</p><div id="pl-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:10px"></div><div class="card" style="margin-top:12px"><h3>Observed spot delta · rolling five minutes</h3><canvas id="pl-chart" style="width:100%;height:180px!important;display:block" aria-label="Rolling spot trade delta history"></canvas><p id="pl-coverage">No samples.</p></div><p class="muted">ETF flows, market-wide liquidations and liquidation heatmaps: unavailable — no verified source configured. Order-book depth is visible liquidity, not executed trades. No trade recommendations or order execution.</p></section>
+<section id="six-pressure" class="card" style="margin-top:16px">
+<div class="eyebrow">BTC ALMANAC · BINANCE VENUE MEASUREMENTS</div><h2>🔱 Six Pressure Gauges</h2>
+<p>Completed UTC hours only for volume and price. Spot and USD-M perpetual futures quote notional in USDT; not global market totals.</p>
+<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><label>Asset <select id="pg-asset" class="obs-field"><option>BTC</option><option>ETH</option><option>SOL</option></select></label><button id="pg-refresh" class="actionBtn">Refresh readings</button><button id="pg-auto" class="actionBtn secondary" aria-pressed="true">Pause auto refresh</button></div>
+<p id="pg-health" role="status" aria-live="polite">Waiting for exchange responses.</p>
+<div id="pg-grid"></div><div class="resultBox" style="margin-top:12px"><b>Combined interpretation · observations only</b><p id="pg-reading">Unavailable until readings arrive.</p></div>
+<p class="muted">Percentage-share gauges use a 0–100% scale. OI, funding and price show signed changes without a common pressure scale. Funding is the latest reported rate, not annualised. No order execution.</p></section>
+<style>
+#pg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,235px),1fr));gap:12px}
+#six-pressure .pg-tile{border:1px solid #66e7ff42;border-radius:16px;background:#07171d;padding:14px;min-width:0}
+#six-pressure .pg-num{font-size:clamp(1.4rem,4vw,2rem);font-weight:900;color:#eaffff;margin:8px 0;overflow-wrap:anywhere}
+#six-pressure .pg-track{height:10px;border-radius:10px;background:#27333a;position:relative;overflow:hidden;margin:10px 0}
+#six-pressure .pg-fill{height:100%;background:#39ff88;width:0;transition:width .2s}
+#six-pressure .pg-mid{position:absolute;left:50%;height:100%;width:2px;background:white}
+#six-pressure .pg-meta{font-size:.76rem;color:#a6bbc8;overflow-wrap:anywhere}
+#six-pressure .pg-signed{font-size:.85rem;color:#a6bbc8;margin:10px 0}
+</style>
 <div class="grid two"><div class="card"><h3>Latest dispatch</h3><span class='obs-tag'>Editorial · supplied title</span><h2>Idiot's Guide to Fixing This Shit</h2><p>Systems &amp; Society. Original article link and publication evidence pending.</p><button type="button" class="pageLinkMini" data-obs-page="editorial">Editorial desk</button></div><div class="card"><h3>Bitcoin feature</h3><span class='obs-tag'>Research · supplied title</span><h2>Nobody Could Have Known?</h2><p>Explore the publication chronology and evidence register.</p><button type="button" class="pageLinkMini" data-obs-page="receipts">Open receipts</button></div></div>
 <div class="grid three"><div class="card"><h3>⚙ Inventions</h3><p>Hydro House · Survival Capsule</p><button type="button" class="pageLinkMini" data-obs-page="workshop">Workshop</button></div><div class="card"><h3>♾ Philosophy & AI</h3><p>Identity, classification and automation</p><button type="button" class="pageLinkMini" data-obs-page="philosophy">Thinking room</button></div><div class="card"><h3>🍽 CHECK, PLEASE</h3><p>Economics, satire and Monday Roast</p><button type="button" class="pageLinkMini" data-obs-page="editorial">Editorial desk</button></div></div></section><section class="page" id="receipts"><div class="hero"><div class="obs-kicker">Evidence before hindsight</div><h1>The Receipts Vault</h1><p class="muted">A register of claims, original sources and outcomes. Unverified entries are not counted as successful predictions.</p></div><div class="card obs-block"><div class="obs-fields"><label>Search<input id="obs-search" class="obs-field" placeholder="Title, target, evidence"></label><label>Status<select id="obs-filter" class="obs-field"><option value="">All</option><option>Unverified</option><option>Pending</option><option>Reached</option><option>Missed</option></select></label><button id="obs-export" class="obs-btn">Export JSON</button><label>Import evidence JSON<input class="obs-field" type="file" id="obs-import" accept=".json"></label></div><div class="obs-table-wrap"><table class="obs-table"><thead><tr><th>Claim / article</th><th>Published</th><th>Target</th><th>Source</th><th>Status / outcome</th></tr></thead><tbody id="obs-receipt-rows"></tbody></table></div><p id="obs-receipt-status" class="obs-note"></p></div><div class="card"><h3>Add evidence record</h3><form id="obs-receipt-form"><div class="obs-fields"><label>Title<input name="title" class="obs-field" required></label><label>Publication date<input type="date" name="date" class="obs-field" required></label><label>Target / claim<input name="target" class="obs-field" required></label><label>Original URL<input type="url" name="url" class="obs-field" required></label><label>Outcome<select name="status" class="obs-field"><option>Unverified</option><option>Pending</option><option>Reached</option><option>Missed</option></select></label><label>Outcome evidence / notes<input name="note" class="obs-field"></label><button class="obs-btn">Add record</button></div></form><p class="obs-note">Local records are user-entered, not independently verified or tamper-proof. Export to preserve your evidence outside this browser.</p></div></section><section class="page" id="lifetime"><div class="hero"><div class="obs-kicker">1,428 days · 12 × 119</div><h1>Lifetime Clock & Zodiac</h1><p class="muted">The twelve equal-duration signs are a conceptual overlay; the 1,064/364 split is a separate calendar model.</p></div><div class="grid two"><div class="card"><div class="obs-clockwheel"><div class="obs-hand" id="obs-hand"></div><div class="obs-clockcenter" id="obs-clockcenter">—</div></div><div class="obs-fields"><label>Anchor UTC<input id="obs-anchor" class="obs-field" type="date" value="2022-11-07"></label><label>As-of date (optional)<input id="obs-asof" type="date" class="obs-field"></label></div></div><div class="card"><h3>Cycle readout</h3><div id="obs-clock-read" class="readout"></div><div id="obs-signs" class="signGrid"></div></div></div></section><section class="page" id="elevator"><div class="hero"><div class="obs-kicker">Price ladder · scenario navigator</div><h1>BTC Elevator™</h1><p class="muted">Choose a level from the supplied research brief. These are reference levels, not trading orders.</p></div><div class="grid two"><div class="card"><div class="obs-elevator"><div class="obs-kicker">Selected floor</div><div class="obs-floor" id="obs-floor">$63,000</div><div id="obs-floor-note" class="obs-note"></div><div class="obs-floors" id="obs-floors"></div></div></div><div class="card"><h3>Distance to selected floor</h3><label>Reference BTC price <input id="obs-ref-price" type="number" min="1" step="1" class="obs-field" placeholder="Enter price"></label><button id="obs-live-price" class="obs-btn">Fetch BTC/USD</button><div id="obs-distance" class="obs-metric">—</div><p id="obs-price-status" class="obs-note">No quote loaded.</p><canvas id="obs-ladder" class="obs-chart" aria-label="Price floor ladder"></canvas></div></div></section><section class="page" id="lab"><div class="hero"><div class="obs-kicker">Frozen claim versus editable scenario</div><h1>Prophecy Lab</h1><p class="muted">Keep the stated September 2029 target separate from any new calculation.</p></div><div class="grid two"><div class="card"><span class="obs-tag">Reference claim · not independently authenticated</span><h3>September 2029 · $170,000–$175,000</h3><p>Centre date: 3 September 2029 (as described in supplied brief).</p><p>Publication date and original article URL have not been supplied. This reference is fixed in the interface.</p></div><div class="card"><h3>Editable scenario</h3><div class="obs-fields"><label>Start price<input id="obs-lab-start" type="number" min="1" value="37711" class="obs-field"></label><label>End price<input id="obs-lab-end" type="number" min="1" value="172500" class="obs-field"></label><label>Days<input id="obs-lab-days" type="number" min="1" max="10000" value="1064" class="obs-field"></label></div><div id="obs-lab-result" class="obs-metric"></div><p class="obs-note">Log-linear hypothetical scenario. Not the historical replay or hyperbola from the terminal.</p></div></div><div class="card obs-block"><canvas id="obs-lab-chart" class="obs-chart" aria-label="Hypothetical growth path compared with reference target"></canvas></div></section><section class="page" id="workshop"><div class="hero"><div class="obs-kicker">Engineering concepts · untested</div><h1>Invention Workshop</h1><p class="muted">Concept research only; no claim of safety, certification or demonstrated performance.</p></div><div class="grid two"><div class="card"><h3>Hydro House</h3><p>Proposed fire-response concept.</p><details><summary>Research questions</summary><p>Water availability, power loss, smoke ingress, structural loads, drainage, independent fire engineering review.</p></details><p class="obs-note">Drawings, material specifications and test evidence pending.</p></div><div class="card"><h3>From Zorb to Survival Capsule</h3><p>Proposed protective capsule concept.</p><details><summary>Research questions</summary><p>Impact loads, buoyancy, ventilation, entrapment, evacuation and independent engineering assessment.</p></details><p class="obs-note">No validated design or survival rating supplied.</p></div></div></section><section class="page" id="philosophy"><div class="hero"><div class="obs-kicker">The thinking room</div><h1>Philosophy & AI Observatory</h1><p class="muted">Identity, classification and the changing relationship between humans and technology.</p></div><div class="grid two"><div class="card"><h3>NULL AND THE PIGEONHOLE</h3><p>Choose labels to explore how incomplete a description can be.</p><div id="obs-labels"><label style="display:block;padding:6px"><input type="checkbox" value="Occupation"> Occupation</label><label style="display:block;padding:6px"><input type="checkbox" value="Age group"> Age group</label><label style="display:block;padding:6px"><input type="checkbox" value="Nationality"> Nationality</label><label style="display:block;padding:6px"><input type="checkbox" value="Interests"> Interests</label><label style="display:block;padding:6px"><input type="checkbox" value="Education"> Education</label><label style="display:block;padding:6px"><input type="checkbox" value="Online activity"> Online activity</label></div><div id="obs-label-result" class="readout">No labels selected.</div></div><div class="card"><h3>Automation & digital society</h3><p>Didn’t We Say They Weren’t Coming for Our Jobs?</p><p>The Great Instagram Ambush</p><p class="obs-note">Article originals and links awaiting source material.</p></div></div></section><section class="page" id="editorial"><div class="hero"><div class="obs-kicker">Editorial desk · satire</div><h1>CHECK, PLEASE 🍽 & Monday Roast</h1><p class="muted">Browse the supplied titles. Original articles are not reproduced or invented.</p></div><div class="obs-fields obs-block"><label>Filter editions<input id="obs-ed-search" class="obs-field" placeholder="Search editorial titles"></label></div><div id="obs-editions" class="grid two"></div></section><section class="page" id="warnings"><div class="hero"><div class="obs-kicker">Cross-market research</div><h1>Early Warning Archive</h1><p class="muted">A separate record of risk warnings, distinct from exact price predictions.</p></div><div class="grid two"><div class="card"><h3>The AI Bubble May Have Just Flashed Its First Real Red Flag</h3><p>Original publication date, evidence and follow-up are awaiting source material.</p><button type="button" class="pageLinkMini" data-obs-page="receipts">Evidence register</button></div><div class="card"><h3>Moon Boys Have Copium</h3><p>Original publication date, evidence and follow-up are awaiting source material.</p><button type="button" class="pageLinkMini" data-obs-page="receipts">Evidence register</button></div><div class="card"><h3>Final Mic Drop</h3><p>Original publication date, evidence and follow-up are awaiting source material.</p><button type="button" class="pageLinkMini" data-obs-page="receipts">Evidence register</button></div></div></section>
 <section class="page" id="weather"><div class="card" style="margin-bottom:12px"><h3>Shared live plumbing observation</h3><p id="pl-shared-weather" role="status">Unavailable</p><small>Separate from legacy narrative and Referee scores; those are not recalculated by this feed.</small></div><div class="hero"><div class="eyebrow">Weather page · first read</div><h1>Storm Watch</h1><span class="bigverdict">Current Bias: DOWN — after peak, falling side</span><p class="muted">The arc has been corrected: the marker is no longer climbing toward another peak. It is placed after the peak on the contraction side, showing exhaustion already happened and the conceptual path is falling unless invalidated.</p></div><div class="desktopSplit"><div class="glowbox"><h3>BTC Harmonic Arc Location</h3><div class="arcWrap"><div class="peakLabel">PEAK / EXHAUSTION PASSED</div><svg class="arc arcSvg" viewBox="0 0 520 260"><path class="seg1" d="M30 230 C95 80,170 25,260 24"/><path class="seg2" d="M260 24 C300 24,335 50,360 88"/><path class="seg3" d="M360 88 C405 150,455 195,495 230"/></svg><div class="fallMarker"></div><div class="downArrow">↘</div><div class="noPeak">Interpretation: no second peak implied. Marker is already beyond top-side exhaustion.</div></div></div><div class="grid"><div class="card"><h3>Weather Verdict</h3><div class="metric bad">Defensive</div><p>Late-cycle fractal condition, harmonic peak pressure and weak confirmation mean the default weather is caution, hedge, reduce leverage, and wait for evidence.</p></div><div class="card"><h3>Invalidation</h3><p>Only changes if structure recovers: decisive divergence flip, contraction behaviour breaks, deviation calms, and the compass shifts from defensive to offensive.</p></div></div></div><div class="grid three"><div class="card"><h3>Live BTC Price</h3><div class="livePriceGrid"><div class="priceBox"><b>BTC / USD</b><span id="btcUsd">Loading…</span><small id="btcUsdChange" class="muted">24h: loading</small></div><div class="priceBox"><b>BTC / GBP</b><span id="btcGbp">Loading…</span><small id="btcGbpChange" class="muted">24h: loading</small></div></div><button class="refreshMini" id="refreshBtcPrice">Refresh BTC price</button><div class="priceStatus" id="btcPriceStatus">Pulling live BTC pricing from CoinGecko. Price is displayed in both USD and GBP.</div><p class="muted">Outcome, not cause — but the live price keeps the weather board grounded.</p></div><div class="card"><h3>Phase</h3><div class="metric warn">Post-Peak</div><p class="muted">Distribution → exhaustion → contraction.</p></div><div class="card"><h3>Direction</h3><div class="metric bad">Down</div><p class="muted">Conceptual pressure until proven otherwise.</p></div></div></section>
@@ -1900,4 +1924,98 @@ $("pl-export").onclick=()=>{let a=document.createElement("a"),u=URL.createObject
 let nextPoll=0;setInterval(()=>{if(running){if(socket&&now()-lastMessage>45000)socket.close();if(!socket&&now()>=retryAt)connect();if(now()>=nextPoll){nextPoll=now()+60000;refresh()}}render()},1000);
 window.ObservatoryPlumbing=Object.freeze({snapshot,math:Object.freeze({flow,imbalance,delta})});render();
 })();
+</script><script>
+(function(){
+"use strict";
+const H=3600000, FIVE=300000;
+const fields=[
+["spot","Spot Buying Pressure","Spot taker-buy quote volume / total quote volume · 24 completed hours",true],
+["futures","Futures Buying Pressure","Perpetual taker-buy quote volume / total quote volume · 24 completed hours",true],
+["participation","Spot Participation","Spot quote volume / combined spot and perpetual quote volume · 24 completed hours",true],
+["oi","Open Interest Pressure","Change in USD-notional OI · latest two consecutive 5-minute observations",false],
+["funding","Funding Pressure","Latest reported perpetual funding rate",false],
+["price","Price Pressure","Spot first open to last close · 24 completed hours",false]];
+const $=id=>document.getElementById(id);
+const n=x=>{if(x===null||x===undefined||x===""||!["string","number"].includes(typeof x)||!Number.isFinite(Number(x)))throw Error("Missing or invalid number");return Number(x)};
+function candles(rows,end){
+ if(!Array.isArray(rows))throw Error("Invalid candle response");
+ const selected=rows.filter(r=>Array.isArray(r)&&Number(r[0])>=end-24*H&&Number(r[0])<end).sort((a,b)=>Number(a[0])-Number(b[0]));
+ if(selected.length!==24)throw Error("24 completed hourly candles required");
+ let total=0,buy=0;
+ selected.forEach((r,i)=>{let t=n(r[0]),o=n(r[1]),h=n(r[2]),l=n(r[3]),c=n(r[4]),closeTime=n(r[6]),q=n(r[7]),b=n(r[10]);
+ if(t!==end-(24-i)*H||closeTime!==t+H-1||o<=0||c<=0||l<=0||h<Math.max(o,c)||l>Math.min(o,c)||q<0||b<0||b>q)throw Error("Invalid or missing hourly candle");
+ total+=q;buy+=b;});
+ return {total,buy,pressure:total>0?100*buy/total:null,price:100*(n(selected[23][4])/n(selected[0][1])-1),end};
+}
+function oi(rows,now,symbol){
+ if(!Array.isArray(rows)||rows.length<2)throw Error("Two OI observations required");
+ const a=rows.slice().sort((x,y)=>n(x.timestamp)-n(y.timestamp)).slice(-2),t0=n(a[0].timestamp),t=n(a[1].timestamp),p=n(a[0].sumOpenInterestValue),v=n(a[1].sumOpenInterestValue);
+ if(a.some(x=>x.symbol!==symbol)||t-t0!==FIVE||now-t>15*60000||t>now||p<=0||v<0)throw Error("Invalid or stale OI observations");
+ return {value:100*(v/p-1),time:t};
+}
+function funding(r,now,symbol){
+ if(r.symbol!==symbol)throw Error("Wrong funding market");
+ const t=n(r.time),v=n(r.lastFundingRate);
+ if(t>now+60000||now-t>15*60000)throw Error("Stale funding response");
+ return {value:v*100,time:t};
+}
+function participation(a,b){return a.total+b.total>0?100*a.total/(a.total+b.total):null}
+const math=Object.freeze({candles,oi,funding,participation});
+if(typeof module!=="undefined"&&module.exports){module.exports=math;return}
+const nodes={};
+for(const [k,title,desc,share] of fields){
+ const tile=document.createElement("div");tile.className="pg-tile";
+ const b=document.createElement("b");b.textContent=title;
+ const val=document.createElement("div");val.className="pg-num";val.textContent="Unavailable";
+ const meter=document.createElement("div");meter.className=share?"pg-track":"pg-signed";
+ const fill=document.createElement("div");fill.className="pg-fill";
+ if(share){meter.append(fill);const mid=document.createElement("div");mid.className="pg-mid";meter.append(mid);meter.hidden=true}else meter.textContent="No reading";
+ const p=document.createElement("div");p.className="pg-meta";p.textContent=desc;
+ const meta=document.createElement("p");meta.className="pg-meta";meta.textContent="Awaiting data";
+ tile.append(b,val,meter,p,meta);$("pg-grid").append(tile);nodes[k]={val,meter,fill,meta,share};
+}
+let revision=0,active=true,busy=false,current=null,lastStart=0,generation=0;
+const source={spot:"Binance Spot",futures:"Binance USD-M Futures",participation:"Binance Spot + USD-M Futures",oi:"Binance USD-M Futures",funding:"Binance USD-M Futures",price:"Binance Spot"};
+async function get(url){const c=new AbortController(),timer=setTimeout(()=>c.abort(),10000);try{const r=await fetch(url,{signal:c.signal,cache:"no-store"});if(!r.ok)throw Error("HTTP "+r.status);return await r.json()}finally{clearTimeout(timer)}}
+function render(s){
+ for(const [k] of fields){const x=s.readings[k],d=nodes[k],v=x?.value,ok=Number.isFinite(v);
+ d.val.textContent=ok?(d.share?"":v>0?"+":"")+v.toFixed(k==="funding"?5:2)+"%":"Unavailable";
+ if(d.share){d.meter.hidden=!ok;d.fill.style.width=ok?v+"%":"0";}else d.meter.textContent=!ok?"No reading":v>0?"▲ Positive":v<0?"▼ Negative":"Neutral";
+ d.meta.textContent=source[k]+" · "+s.symbol+" · "+(ok?new Date(x.time).toISOString():x?.error||"No data");
+ }
+ const r=s.readings,v=k=>r[k]?.value, pieces=[];
+ if(Number.isFinite(v("price")))pieces.push("Spot price "+(v("price")>0?"advanced":v("price")<0?"declined":"unchanged")+" over the completed window.");
+ for(const [k,label] of [["spot","Spot"],["futures","Futures"]])if(Number.isFinite(v(k)))pieces.push(label+" "+(v(k)>50?"buy-dominant":v(k)<50?"sell-dominant":"balanced")+".");
+ if(Number.isFinite(v("oi")))pieces.push("USD-notional exposure "+(v("oi")>0?"expanded":v("oi")<0?"contracted":"unchanged")+"; price changes can affect this metric.");
+ if(Number.isFinite(v("funding")))pieces.push(v("funding")>0?"Positive funding: longs generally pay shorts.":v("funding")<0?"Negative funding: shorts generally pay longs.":"Funding neutral.");
+ $("pg-reading").textContent=pieces.length?pieces.join(" ")+" These readings do not prove which positions opened or closed.":"Unavailable until readings arrive.";
+ $("pg-health").textContent=Object.values(r).filter(x=>Number.isFinite(x.value)).length+"/6 available · "+s.symbol+" · checked "+new Date(s.checkedAt).toISOString()+(active?" · auto refresh 30s":" · paused");
+ current=s;document.dispatchEvent(new CustomEvent("observatory:pressure",{detail:s}));
+}
+async function refresh(){
+ if(busy)return;busy=true;lastStart=Date.now();const token=generation,symbol=$("pg-asset").value+"USDT",now=Date.now(),end=Math.floor(now/H)*H;
+ $("pg-refresh").disabled=true;$("pg-health").textContent="Requesting "+symbol+" readings…";
+ const q="?symbol="+symbol+"&interval=1h&startTime="+(end-24*H)+"&endTime="+(end-1)+"&limit=24";
+ const urls=["https://data-api.binance.vision/api/v3/klines"+q,"https://fapi.binance.com/fapi/v1/klines"+q,"https://fapi.binance.com/futures/data/openInterestHist?symbol="+symbol+"&period=5m&limit=2","https://fapi.binance.com/fapi/v1/premiumIndex?symbol="+symbol];
+ try{
+ const result=await Promise.allSettled(urls.map(get)),out={};
+ const unwrap=i=>{if(result[i].status!=="fulfilled")throw result[i].reason;return result[i].value};
+ let a,b,ea,eb;
+ try{a=candles(unwrap(0),end)}catch(e){ea=e.message}
+ try{b=candles(unwrap(1),end)}catch(e){eb=e.message}
+ function set(k,v,t,error){out[k]=Object.freeze(Number.isFinite(v)?{value:v,time:t}:{value:null,error:error||"No measurable volume"});}
+ set("spot",a?.pressure,end,ea);set("futures",b?.pressure,end,eb);set("price",a?.price,end,ea);
+ set("participation",a&&b?participation(a,b):null,end,ea||eb);
+ for(const [k,i,fn] of [["oi",2,oi],["funding",3,funding]])try{const x=fn(unwrap(i),Date.now(),symbol);set(k,x.value,x.time)}catch(e){set(k,null,null,e.message)}
+ if(token===generation)render(Object.freeze({version:1,revision:++revision,symbol,checkedAt:Date.now(),readings:Object.freeze(out)}));
+ }finally{busy=false;$("pg-refresh").disabled=false;if(token!==generation)refresh()}
+}
+$("pg-refresh").onclick=refresh;
+$("pg-asset").onchange=()=>{generation++;current=null;for(const d of Object.values(nodes)){d.val.textContent="Unavailable";d.meta.textContent="Changing market";if(d.share)d.meter.hidden=true;else d.meter.textContent="No reading"}$("pg-reading").textContent="Waiting for selected market";refresh()};
+$("pg-auto").onclick=()=>{active=!active;$("pg-auto").textContent=active?"Pause auto refresh":"Resume auto refresh";$("pg-auto").setAttribute("aria-pressed",String(active));if(active)refresh();else $("pg-health").textContent+=" · auto refresh paused"};
+setInterval(()=>{if(active&&!document.hidden&&Date.now()-lastStart>=30000)refresh();if(current&&Date.now()-current.checkedAt>90000){const r={};for(const [k] of fields)r[k]=Object.freeze({value:null,error:"Stale: refresh required"});render(Object.freeze({...current,revision:++revision,readings:Object.freeze(r)}));current=null}},1000);
+window.ObservatoryPressure=Object.freeze({math,snapshot:()=>current,refresh});
+refresh();
+})();
 </script></body></html>
+
